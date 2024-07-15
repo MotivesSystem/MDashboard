@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useState } from 'react';
 import moment from 'moment';
+import { DateBox } from 'devextreme-react';
 import _ from 'lodash';
 import { PieChart, pieArcLabelClasses } from '@mui/x-charts/PieChart';
 import { styled } from '@mui/material/styles';
@@ -17,8 +18,17 @@ import CardHeader from '@mui/material/CardHeader';
 import CardMedia from '@mui/material/CardMedia';
 import CardContent from '@mui/material/CardContent';
 import axios from '../../utils/axios';
+import Page from '../../components/Page';
+import Iconify from '../../components/Iconify';
+import IconName from '../../utils/iconsName';
 
 const baseHosting = "https://test-dashboard-api.motivesfareast.com/";
+
+type dateType = Date;
+interface IQueryDate {
+  startDate: dateType;
+  endDate: dateType;
+}
 
 const dataDashboarDesign = [
   { value: 10, label: 'Planning' },
@@ -138,39 +148,46 @@ const setColorSeries = (label) => {
     return "#2596be";
 }
 
-const TQADasboardSampleProduction = () => {
+// ----------------------------------------------------------------
+const TQADasboardSampleProduction = ({ startDate = "", endDate = "" }) => {
+
   const [dataSampleProduction, setDataSampleProduction] = useState([]);
+  const [dataTop5SampleProductionBestWeek, setDataTop5SampleProductionBestWeek] = useState([]);
+  const [dataTop5SampleProductionBestYTD, setDataTop5SampleProductionBestYTD] = useState([]);
+  const [dataTop5SampleProductionWorstWeek, setDataTop5SampleProductionWorstWeek] = useState([]);
+  const [dataTop5SampleProductionWorstYTD, setDataTop5SampleProductionWorstYTD] = useState([]);
+
   const getDataChart = useCallback(async () => {
     try {
       const postData = {
         "module": "SAMPLE_PRODUCT_PLAINNING",
-        "start_date": "2023/01/01",
-        "end_date": "2024/01/01",
+        "start_date": startDate,
+        "end_date": endDate,
       };
 
-      const response = await axios.post(`${baseHosting}api/dashboard/get-pie-chart-data`, postData)
+      const response = await axios.post(`${baseHosting}api/dashboard/get-pie-chart-data`, postData);
       const total = response.data.reply.total_sum;
       const newData = response.data.reply.items.map((val, i) => {
         return { value: Math.round(val.value / total * 100, 2), label: val.name, color: setColorSeries(val.name) }
-      })
+      });
       const newDataDesign = {
         total: response.data.reply.total_sum,
         percent: response.data.reply.percentage,
         data: newData
-      }
+      };
       setDataSampleProduction(newDataDesign);
     }
     catch (error) {
       console.error(error);
     }
-  }, []);
+  }, [startDate, endDate]);
 
-  const [dataTop5SampleProductionBestWeek, setDataTop5SampleProductionBestWeek] = useState([]);
+
   const getDataTop5SampleProductionBestWeek = useCallback(async () => {
     try {
       const postData = {
-        "start_date": "2020/01/01",
-        "end_date": "2024/01/01",
+        "start_date": startDate,
+        "end_date": endDate,
         "top_number": 5,
         "employee_list_type": "BEST",
         "module": "SAMPLE_PRODUCT_PLAINNING"
@@ -185,14 +202,14 @@ const TQADasboardSampleProduction = () => {
     catch (error) {
       console.error(error);
     }
-  }, []);
+  }, [startDate, endDate]);
 
-  const [dataTop5SampleProductionBestYTD, setDataTop5SampleProductionBestYTD] = useState([]);
+
   const getDataTop5SampleProductionBestYTD = useCallback(async () => {
     try {
       const postData = {
-        "start_date": "2020/01/01",
-        "end_date": "2024/01/01",
+        "start_date": startDate,
+        "end_date": endDate,
         "top_number": 5,
         "employee_list_type": "BEST",
         "module": "SAMPLE_PRODUCT_PLAINNING"
@@ -209,12 +226,12 @@ const TQADasboardSampleProduction = () => {
     }
   }, []);
 
-  const [dataTop5SampleProductionWorstWeek, setDataTop5SampleProductionWorstWeek] = useState([]);
+
   const getDataTop5SampleProductionWorstWeek = useCallback(async () => {
     try {
       const postData = {
-        "start_date": "2020/01/01",
-        "end_date": "2024/01/01",
+        "start_date": startDate,
+        "end_date": endDate,
         "top_number": 5,
         "employee_list_type": "WORST",
         "module": "SAMPLE_PRODUCT_PLAINNING"
@@ -229,14 +246,14 @@ const TQADasboardSampleProduction = () => {
     catch (error) {
       console.error(error);
     }
-  }, []);
+  }, [startDate, endDate]);
 
-  const [dataTop5SampleProductionWorstYTD, setDataTop5SampleProductionWorstYTD] = useState([]);
+
   const getDataTop5SampleProductionWorstYTD = useCallback(async () => {
     try {
       const postData = {
-        "start_date": "2020/01/01",
-        "end_date": "2024/01/01",
+        "start_date": startDate,
+        "end_date": endDate,
         "top_number": 5,
         "employee_list_type": "WORST",
         "module": "SAMPLE_PRODUCT_PLAINNING"
@@ -251,7 +268,7 @@ const TQADasboardSampleProduction = () => {
     catch (error) {
       console.error(error);
     }
-  }, []);
+  }, [startDate, endDate]);
 
   useEffect(() => {
     getDataChart();
@@ -259,12 +276,12 @@ const TQADasboardSampleProduction = () => {
     getDataTop5SampleProductionBestYTD();
     getDataTop5SampleProductionWorstWeek();
     getDataTop5SampleProductionWorstYTD();
-  }, [])
+  }, [startDate, endDate]);
 
   return (
-    <Box sx={{ ...commonBoxStyles }}>
+    <Box>
       <Grid container>
-        <Grid xs={7} style={{ textAlign: "left" }}>
+        <Grid item xs={7} style={{ textAlign: "left" }}>
           <Box style={{ display: 'flex' }}>
             <Typography style={{ marginLeft: "5px", width: "200px", fontWeight: "bold", fontSize: "13px" }}>Sample Production</Typography>
             <Box sx={{ width: '50%' }}>
@@ -272,7 +289,7 @@ const TQADasboardSampleProduction = () => {
             </Box>
           </Box>
         </Grid>
-        <Grid xs={5}>
+        <Grid item xs={5}>
           <Box style={{ display: 'flex', justifyContent: "right" }}>
             <Typography style={{ marginRight: "5px", fontWeight: "bold", fontSize: "20px" }}>Total Qty:</Typography>
             <Typography style={{ marginRight: "5px", fontWeight: "bold", fontSize: "20px", color: "#4AC34A" }}>{dataSampleProduction?.total}</Typography>
@@ -296,15 +313,15 @@ const TQADasboardSampleProduction = () => {
           {...{ width: 600, height: 425 }}
         />
       </Item>
-      <Grid container xs={{ m: 10, p: 10 }}>
-        <Grid md={12} xs={12}>
+      <Grid container sx={{ m: 10, p: 10 }}>
+        <Grid item md={12} xs={12}>
           <Typography style={commonLabelTop5Employee}>Top 5 Best Employees</Typography>
           <TQADasboardSampleProductionTop5BestEmployeeYTD dataTop5SampleProductionBestWeek={dataTop5SampleProductionBestWeek} />
           <TQADasboardSampleProductionTop5BestEmployeeWeek dataTop5SampleProductionBestYTD={dataTop5SampleProductionBestYTD} />
         </Grid>
       </Grid>
-      <Grid container xs={{ m: 10, p: 10 }}>
-        <Grid md={12} xs={12}>
+      <Grid container sx={{ m: 10, p: 10 }}>
+        <Grid item md={12} xs={12}>
           <Typography style={commonLabelTop5Employee}>Top 5 Worst Employees</Typography>
           <TQADasboardSampleProductionTop5WorstEmployeeYTD dataTop5SampleProductionWorstYTD={dataTop5SampleProductionWorstYTD} />
           <TQADasboardSampleProductionTop5WorstEmployeeWeek dataTop5SampleProductionWorstWeek={dataTop5SampleProductionWorstWeek} />
@@ -317,7 +334,7 @@ const TQADasboardSampleProduction = () => {
 
 const TQADasboardSampleProductionTop5BestEmployeeYTD = ({ dataTop5SampleProductionBestYTD = [] }) => {
   return (
-    <Box style={{ padding: "10px" }}>
+    <Box>
       <Typography style={{ textAlign: "left" }}>By Year - 2024</Typography>
       <Stack direction="row" spacing={1} justifyContent="flex-start" alignItems="center">
         {
@@ -414,14 +431,14 @@ const TQADasboardSampleProductionTop5WorstEmployeeWeek = ({ dataTop5SampleProduc
   )
 }
 
-const TQADasboardDesign = () => {
+const TQADasboardDesign = ({ startDate = "", endDate = "" }) => {
   const [dataDesign, setDataDesign] = useState([]);
   const getDataChart = useCallback(async () => {
     try {
       const postData = {
         "module": "DESIGN_PLANNING",
-        "start_date": "2023/01/01",
-        "end_date": "2024/01/01",
+        "start_date": startDate,
+        "end_date": endDate,
       };
 
       const response = await axios.post(`${baseHosting}api/dashboard/get-pie-chart-data`, postData)
@@ -443,15 +460,15 @@ const TQADasboardDesign = () => {
     catch (error) {
       console.error(error);
     }
-  }, []);
+  }, [startDate, endDate,]);
 
   const [dataChartTechPack, setDataChartTechPack] = useState([]);
   const getDataChartTechPack = useCallback(async () => {
     try {
       const postData = {
         "design_document": "PATTERN",
-        "start_date": "2023/01/01",
-        "end_date": "2024/01/01",
+        "start_date": startDate,
+        "end_date": endDate,
       };
 
       const response = await axios.post(`${baseHosting}api/dashboard/get-design-planning-chart-info`, postData)
@@ -466,15 +483,15 @@ const TQADasboardDesign = () => {
     catch (error) {
       console.error(error);
     }
-  }, []);
+  }, [startDate, endDate,]);
 
   const [dataChartConsumtion, setDataChartConsumtion] = useState([]);
   const getDataChartConsumtion = useCallback(async () => {
     try {
       const postData = {
         "design_document": "CONSUMPTION",
-        "start_date": "2023/01/01",
-        "end_date": "2024/01/01",
+        "start_date": startDate,
+        "end_date": endDate,
       };
 
       const response = await axios.post(`${baseHosting}api/dashboard/get-design-planning-chart-info`, postData)
@@ -495,8 +512,8 @@ const TQADasboardDesign = () => {
     try {
       const postData = {
         "design_document": "PATTERN",
-        "start_date": "2023/01/01",
-        "end_date": "2024/01/01",
+        "start_date": startDate,
+        "end_date": endDate,
       };
 
       const response = await axios.post(`${baseHosting}api/dashboard/get-design-planning-chart-info`, postData)
@@ -510,14 +527,14 @@ const TQADasboardDesign = () => {
     catch (error) {
       console.error(error);
     }
-  }, []);
+  }, [startDate, endDate,]);
 
   const [dataTop5DesignBestWeek, setDataTop5DesignBestWeek] = useState([]);
   const getDataTop5DesignBestWeek = useCallback(async () => {
     try {
       const postData = {
-        "start_date": "2020/01/01",
-        "end_date": "2024/01/01",
+        "start_date": startDate,
+        "end_date": endDate,
         "top_number": 5,
         "employee_list_type": "BEST",
         "module": "DESIGN_PLANNING"
@@ -532,14 +549,14 @@ const TQADasboardDesign = () => {
     catch (error) {
       console.error(error);
     }
-  }, []);
+  }, [startDate, endDate,]);
 
   const [dataTop5DesignBestYTD, setDataTop5DesignBestYTD] = useState([]);
   const getDataTop5DesignBestYTD = useCallback(async () => {
     try {
       const postData = {
-        "start_date": "2020/01/01",
-        "end_date": "2024/01/01",
+        "start_date": startDate,
+        "end_date": endDate,
         "top_number": 5,
         "employee_list_type": "BEST",
         "module": "DESIGN_PLANNING"
@@ -554,14 +571,14 @@ const TQADasboardDesign = () => {
     catch (error) {
       console.error(error);
     }
-  }, []);
+  }, [startDate, endDate,]);
 
   const [dataTop5DesignWorstWeek, setDataTop5DesignWorstWeek] = useState([]);
   const getDataTop5DesignWorstWeek = useCallback(async () => {
     try {
       const postData = {
-        "start_date": "2020/01/01",
-        "end_date": "2024/01/01",
+        "start_date": startDate,
+        "end_date": endDate,
         "top_number": 5,
         "employee_list_type": "WORST",
         "module": "DESIGN_PLANNING"
@@ -576,21 +593,20 @@ const TQADasboardDesign = () => {
     catch (error) {
       console.error(error);
     }
-  }, []);
+  }, [startDate, endDate,]);
 
   const [dataTop5DesignWorstYTD, setDataTop5DesignWorstYTD] = useState([]);
   const getDataTop5DesignWorstYTD = useCallback(async () => {
     try {
       const postData = {
-        "start_date": "2020/01/01",
-        "end_date": "2024/01/01",
+        "start_date": startDate,
+        "end_date": endDate,
         "top_number": 5,
         "employee_list_type": "WORST",
         "module": "DESIGN_PLANNING"
       };
 
       const response = await axios.post(`${baseHosting}api/dashboard/get-top-best-worst-sample-production-performance-by-year`, postData);
-
       if (response && response.data.result === "success") {
         setDataTop5DesignWorstYTD(response.data.reply || []);
       }
@@ -598,7 +614,7 @@ const TQADasboardDesign = () => {
     catch (error) {
       console.error(error);
     }
-  }, []);
+  }, [startDate, endDate,]);
 
   useEffect(() => {
     getDataChart();
@@ -609,12 +625,12 @@ const TQADasboardDesign = () => {
     getDataTop5DesignBestYTD();
     getDataTop5DesignWorstWeek();
     getDataTop5DesignWorstYTD();
-  }, [])
+  }, [startDate, endDate,])
 
   return (
     <Box sx={{ ...commonBoxStyles }}>
       <Grid container>
-        <Grid xs={6} style={{ textAlign: "left" }}>
+        <Grid item xs={6} style={{ textAlign: "left" }}>
           <Box style={{ display: 'flex' }}>
             <Typography style={{ marginLeft: "5px", width: "90px", fontWeight: "bold", fontSize: "20px" }}>Design</Typography>
             <Box sx={{ width: '50%' }}>
@@ -622,7 +638,7 @@ const TQADasboardDesign = () => {
             </Box>
           </Box>
         </Grid>
-        <Grid xs={6}>
+        <Grid item xs={6}>
           <Box style={{ display: 'flex', justifyContent: "right" }}>
             <Typography style={{ marginRight: "5px", fontWeight: "bold", fontSize: "20px" }}>Total Qty</Typography>
             <Typography style={{ marginRight: "5px", fontWeight: "bold", fontSize: "20px", color: "#4AC34A" }}>{dataDesign.total}</Typography>
@@ -658,7 +674,7 @@ const TQADasboardDesign = () => {
         />
       </Item>
       <Grid container>
-        <Grid md={4} xs={12}>
+        <Grid item md={4} xs={12}>
           <Item>
             <PieChart
               series={[
@@ -678,7 +694,7 @@ const TQADasboardDesign = () => {
           </Item>
           <Typography style={{ textAlign: "center" }}>Tech Pack</Typography>
         </Grid>
-        <Grid md={4} xs={12}>
+        <Grid item md={4} xs={12}>
           <Item>
             <PieChart
               series={[
@@ -698,7 +714,7 @@ const TQADasboardDesign = () => {
           </Item>
           <Typography style={{ textAlign: "center" }}>Pattern</Typography>
         </Grid>
-        <Grid md={4} xs={12}>
+        <Grid item md={4} xs={12}>
           <Item>
             <PieChart
               series={[
@@ -720,14 +736,14 @@ const TQADasboardDesign = () => {
         </Grid>
       </Grid>
       <Grid container xs={{ m: 10, p: 10 }}>
-        <Grid md={12} xs={12}>
+        <Grid item md={12} xs={12}>
           <Typography style={commonLabelTop5Employee}>Top 5 Best Employees</Typography>
           <TQADasboardDesignTop5BestEmployeeYTD dataTop5DesignBestYTD={dataTop5DesignBestYTD} />
           <TQADasboardDesignTop5BestEmployeeWeek dataTop5DesignBestWeek={dataTop5DesignBestWeek} />
         </Grid>
       </Grid>
       <Grid container xs={{ m: 10, p: 10 }}>
-        <Grid md={12} xs={12}>
+        <Grid item md={12} xs={12}>
           <Typography style={commonLabelTop5Employee}>Top 5 Worst Employees</Typography>
           <TQADasboardDesignTop5WorstEmployeeYTD dataTop5DesignWorstYTD={dataTop5DesignWorstYTD} />
           <TQADasboardDesignTop5WorstEmployeeWeek dataTop5DesignWorstWeek={dataTop5DesignWorstWeek} />
@@ -837,14 +853,14 @@ const TQADasboardDesignTop5WorstEmployeeWeek = ({ dataTop5DesignWorstWeek = [] }
   )
 }
 
-const TQADasboard3D = () => {
+const TQADasboard3D = ({ startDate = new Date(), endDate = new Date() }) => {
   const [data3D, setData3D] = useState([]);
   const getDataChart = useCallback(async () => {
     try {
       const postData = {
         "module": "PROCESS_3D",
-        "start_date": "2021/01/01",
-        "end_date": "2025/01/01",
+        "start_date": startDate,
+        "end_date": endDate,
       };
 
       const response = await axios.post(`${baseHosting}api/dashboard/get-pie-chart-data`, postData)
@@ -870,8 +886,8 @@ const TQADasboard3D = () => {
   const getDataTop53DBestWeek = useCallback(async () => {
     try {
       const postData = {
-        "start_date": "2020/01/01",
-        "end_date": "2024/01/01",
+        "start_date": startDate,
+        "end_date": endDate,
         "top_number": 5,
         "employee_list_type": "BEST",
         "module": "PROCESS_3D"
@@ -914,8 +930,8 @@ const TQADasboard3D = () => {
   const getDataTop53DWorstWeek = useCallback(async () => {
     try {
       const postData = {
-        "start_date": "2020/01/01",
-        "end_date": "2024/01/01",
+        "start_date": startDate,
+        "end_date": endDate,
         "top_number": 5,
         "employee_list_type": "WORST",
         "module": "PROCESS_3D"
@@ -936,8 +952,8 @@ const TQADasboard3D = () => {
   const getDataTop53DWorstYTD = useCallback(async () => {
     try {
       const postData = {
-        "start_date": "2020/01/01",
-        "end_date": "2024/01/01",
+        "start_date": startDate,
+        "end_date": endDate,
         "top_number": 5,
         "employee_list_type": "WORST",
         "module": "PROCESS_3D"
@@ -997,15 +1013,15 @@ const TQADasboard3D = () => {
           {...{ width: 600, height: 425 }}
         />
       </Item>
-      <Grid container xs={{ m: 10, p: 10 }}>
-        <Grid md={12} xs={12}>
+      <Grid container sx={{ m: 10, p: 10 }}>
+        <Grid item md={12} xs={12}>
           <Typography style={commonLabelTop5Employee}>Top 5 Best Employees</Typography>
           <TQADasboard3DTop5BestEmployeeYTD dataTop53DBestYTD={dataTop53DBestYTD} />
           <TQADasboard3DTop5BestEmployeeWeek dataTop53DBestWeek={dataTop53DBestWeek} />
         </Grid>
       </Grid>
-      <Grid container xs={{ m: 10, p: 10 }}>
-        <Grid md={12} xs={12}>
+      <Grid container sx={{ m: 10, p: 10 }}>
+        <Grid item md={12} xs={12}>
           <Typography style={commonLabelTop5Employee}>Top 5 Worst Employees</Typography>
           <TQADasboard3DTop5WorstEmployeeYTD dataTop53DWorstYTD={dataTop53DWorstYTD} />
           <TQADasboard3DTop5WorstEmployeeWeek dataTop53DWorstWeek={dataTop53DWorstWeek} />
@@ -1118,28 +1134,133 @@ const TQADasboard3DTop5WorstEmployeeWeek = ({ dataTop53DWorstWeek = [] }) => {
 
 
 const TQADashboard = () => {
+
+  // components states;
+
+  const [startDate, setStartDate] = useState(new Date());
+  const [endDate, setEndDate] = useState(new Date());
+  const [submitedDate, setSubmitedDate] = useState({
+    startDate: new Date(),
+    endDate: new Date(),
+  });
+
+  // Custom functions;
+  const handleChangeDate = (e, type) => {
+    try {
+      if (type === 'startDate') {
+        setStartDate(e);
+        if (moment(endDate).diff(e, 'days') < 0) {
+          setEndDate(e);
+        }
+      } else {
+        setEndDate(e)
+      }
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  const disableDates = (args) => {
+    return moment(args.date).diff(startDate, 'days') < 0;
+  }
+
+  const stringStartDate = moment(startDate).format('yyyy/MM/DD');
+  const stringEndDate = moment(endDate).format('yyyy/MM/DD');
+
   return (
-    <Grid container p={1} spacing={2}>
-      <Grid xs={12} md={12}>
-        <Grid xs={4}>
-          <Typography>SAMPLE STATISTICS</Typography>
-        </Grid>
-        <Grid xs={6}>
-          Report Date:
+    <Page title="TQA - Technical Dashboard">
 
-        </Grid>
-      </Grid>
-      <Grid xs={12} md={4}>
-        <TQADasboardDesign />
-      </Grid>
-      <Grid xs={12} md={4}>
-        <TQADasboard3D />
-      </Grid>
-      <Grid xs={12} md={4}>
-        <TQADasboardSampleProduction />
-      </Grid>
-    </Grid>
+      <Stack direction="row" justifyContent={'flex-start'} alignItems={'center'} p={1}>
+        <Box width={'40%'}>
+          <Typography variant='title' fontWeight='bold'>SAMPLE STATISTICS</Typography>
+        </Box>
+        <Stack direction="row" justifyContent={'flex-start'} alignItems={'center'} width={'60%'}>
+          <Typography>
+            Report Date
+          </Typography>
 
+          <Iconify icon={"ic:baseline-info"} sx={{ fontSize: 20, color: 'blue', ml: 1 }} />:
+
+          <DateBox
+            type="date"
+            displayFormat={"dd/MM/yyyy"}
+            label="Month"
+            labelMode="hidden"
+            dropDownOptions={{
+              container: "#drawer-backdrop"
+            }}
+            style={{
+              maxHeight: "40px",
+              overFlow: 'hidden',
+              "&.dxButtonContent": {
+                maxHeight: "40px !important",
+              },
+              border: 'none'
+            }}
+            value={startDate}
+            onValueChange={(newValue) => {
+              handleChangeDate(newValue, 'startDate');
+            }}
+            height={40}
+            width={100}
+            showTodayButton
+            hoverStateEnabled={false}
+            activeStateEnabled={false}
+            openOnFieldClick
+            showDropDownButton={false}
+            showClearButton={false}
+          />
+
+          <Typography>~</Typography>
+
+          <DateBox
+            type="date"
+            displayFormat={"dd/MM/yyyy"}
+            label="Month"
+            labelMode="hidden"
+            dropDownOptions={{
+              container: "#drawer-backdrop"
+            }}
+            style={{
+              maxHeight: "40px",
+              overFlow: 'hidden',
+              "&.dxButtonContent": {
+                maxHeight: "40px !important",
+              },
+              border: 'none'
+            }}
+            value={endDate}
+            onValueChange={(newValue) => {
+              handleChangeDate(newValue, 'endDate');
+            }}
+            height={40}
+            width={140}
+            showTodayButton
+            hoverStateEnabled={false}
+            activeStateEnabled={false}
+            openOnFieldClick
+            disabledDates={(data) => disableDates(data)}
+          />
+
+        </Stack>
+      </Stack>
+
+      <Box>
+
+        <Grid container p={1} spacing={2}>
+          <Grid item xs={12} md={4}>
+            <TQADasboardDesign startDate={stringStartDate} endDate={stringEndDate} />
+          </Grid>
+          <Grid item xs={12} md={4}>
+            <TQADasboard3D startDate={stringStartDate} endDate={stringEndDate} />
+          </Grid>
+          <Grid item xs={12} md={4}>
+            <TQADasboardSampleProduction startDate={stringStartDate} endDate={stringEndDate} />
+          </Grid>
+        </Grid>
+      </Box>
+
+    </Page>
   );
 };
 

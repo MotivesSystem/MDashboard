@@ -123,7 +123,8 @@ const navConfig = [
         children: [
           // { title: 'Monthly Production', path: PATH_APP.tqa.overall, id: 'tqa' },
           // { title: 'Factory Map', path: PATH_APP.tqa.factory_profile, id: 'tqa' },
-          { title: 'Dashboard', path: PATH_APP.tqa.tqa_dashboard, id: 'tqa' },
+          { title: 'Technical Dashboard', path: PATH_APP.tqa.tqa_dashboard, id: 'tqa' },
+          { title: 'Sample Dashboard', path: PATH_APP.tqa.sample_statistics, id: 'tqa' },
         ],
       },
     ],
