@@ -95,201 +95,201 @@ export default function Router() {
         //   index: true,
         // },
 
-        {
-          element: <Navigate to={PATH_AFTER_LOGIN} replace />,
-          index: true,
-        },
+        // {
+        //   element: <Navigate to={PATH_AFTER_LOGIN} replace />,
+        //   index: true,
+        // },
 
-        {
-          path: 'calendar',
-          children: [
-            { element: <Navigate to="/calendar/activity" replace />, index: true },
-            { path: 'activity', element: <CalendarPage /> },
-            { path: 'event', element: <CalendarEditPage /> },
-          ],
-        },
+        // {
+        //   path: 'calendar',
+        //   children: [
+        //     { element: <Navigate to="/calendar/activity" replace />, index: true },
+        //     { path: 'activity', element: <CalendarPage /> },
+        //     { path: 'event', element: <CalendarEditPage /> },
+        //   ],
+        // },
 
-        { path: 'home', element: <GeneralApp /> },
+        // { path: 'home', element: <GeneralApp /> },
 
-        {
-          path: 'accounting',
-          children: [
-            { element: <Navigate to="/accounting/pending/list" replace />, index: true },
-            {
-              path: 'pending',
-              children: [
-                { element: <Navigate to="/accounting/pending/list" replace />, index: true },
-                {
-                  path: 'list', element: <ApprovePendingList />
-                },
-                { path: 'report/:name', element: <ApprovalReport /> },
-              ],
-            },
-            {
-              path: 'recall',
-              children: [
-                { element: <Navigate to="/accounting/recall/list" replace />, index: true },
-                { path: 'list', element: <ApprovalRecall /> },
-                { path: 'report/:name', element: <ApprovalReport /> },
-              ],
-            },
-          ],
-        },
+        // {
+        //   path: 'accounting',
+        //   children: [
+        //     { element: <Navigate to="/accounting/pending/list" replace />, index: true },
+        //     {
+        //       path: 'pending',
+        //       children: [
+        //         { element: <Navigate to="/accounting/pending/list" replace />, index: true },
+        //         {
+        //           path: 'list', element: <ApprovePendingList />
+        //         },
+        //         { path: 'report/:name', element: <ApprovalReport /> },
+        //       ],
+        //     },
+        //     {
+        //       path: 'recall',
+        //       children: [
+        //         { element: <Navigate to="/accounting/recall/list" replace />, index: true },
+        //         { path: 'list', element: <ApprovalRecall /> },
+        //         { path: 'report/:name', element: <ApprovalReport /> },
+        //       ],
+        //     },
+        //   ],
+        // },
 
-        {
-          path: 'shipment',
-          children: [
-            { element: <Navigate to="/shipment/pending/list" replace />, index: true },
-            {
-              path: 'pending',
-              children: [
-                { element: <Navigate to="/shipment/pending/list" replace />, index: true },
-                { path: 'list', element: <ShipmentPendingList /> },
-                { path: 'report/:name', element: <ShipmentApproval /> },
-                { path: 'document_detail/:name', element: <ShipmentDocDetail /> },
-              ],
-            },
-            {
-              path: 'recall',
-              children: [
-                { element: <Navigate to="/shipment/recall/list" replace />, index: true },
-                { path: 'list', element: <ShipmentRecall /> },
-              ],
-            },
-          ],
-        },
+        // {
+        //   path: 'shipment',
+        //   children: [
+        //     { element: <Navigate to="/shipment/pending/list" replace />, index: true },
+        //     {
+        //       path: 'pending',
+        //       children: [
+        //         { element: <Navigate to="/shipment/pending/list" replace />, index: true },
+        //         { path: 'list', element: <ShipmentPendingList /> },
+        //         { path: 'report/:name', element: <ShipmentApproval /> },
+        //         { path: 'document_detail/:name', element: <ShipmentDocDetail /> },
+        //       ],
+        //     },
+        //     {
+        //       path: 'recall',
+        //       children: [
+        //         { element: <Navigate to="/shipment/recall/list" replace />, index: true },
+        //         { path: 'list', element: <ShipmentRecall /> },
+        //       ],
+        //     },
+        //   ],
+        // },
 
-        {
-          path: 'bank_account',
-          children: [
-            { element: <Navigate to="/bank_account/pending/list" replace />, index: true },
-            {
-              path: 'pending',
-              children: [
-                { element: <Navigate to="/bank_account/pending/list" replace />, index: true },
-                { path: 'list', element: <BankAccountPending /> },
-                { path: 'report/:name', element: <BankAccountReport /> },
-              ],
-            },
-            {
-              path: 'recall',
-              children: [
-                { element: <Navigate to="/bank_account/recall/list" replace />, index: true },
-                { path: 'list', element: <BankAccountRecall /> },
-              ],
-            },
-          ],
-        },
+        // {
+        //   path: 'bank_account',
+        //   children: [
+        //     { element: <Navigate to="/bank_account/pending/list" replace />, index: true },
+        //     {
+        //       path: 'pending',
+        //       children: [
+        //         { element: <Navigate to="/bank_account/pending/list" replace />, index: true },
+        //         { path: 'list', element: <BankAccountPending /> },
+        //         { path: 'report/:name', element: <BankAccountReport /> },
+        //       ],
+        //     },
+        //     {
+        //       path: 'recall',
+        //       children: [
+        //         { element: <Navigate to="/bank_account/recall/list" replace />, index: true },
+        //         { path: 'list', element: <BankAccountRecall /> },
+        //       ],
+        //     },
+        //   ],
+        // },
 
-        {
-          path: 'qc',
-          children: [
-            {
-              path: 'planing',
-              children: [
-                { element: <Navigate to="/qc/planing/list" replace />, index: true },
-                {
-                  path: 'list',
-                  element: <QCPlaning />,
-                },
-              ],
-            },
-            {
-              path: 'inspection',
-              children: [
-                { element: <Navigate to="/qc/inspection/list" replace />, index: true },
-                {
-                  path: 'list',
-                  element: <QCInspectionList />
-                  ,
-                },
-                { path: 'detail/:name', element: <QCInspectionDetail /> },
-              ],
-            },
-            {
-              path: 'production_activity',
-              children: [
-                { element: <Navigate to="/qc/production_activity/list" replace />, index: true },
-                {
-                  path: 'list',
-                  element: <QCProductionActivity />,
-                },
-                { path: 'detail/:name', element: <QCProductionActivityDetail /> },
-              ],
-            },
-          ],
-        },
+        // {
+        //   path: 'qc',
+        //   children: [
+        //     {
+        //       path: 'planing',
+        //       children: [
+        //         { element: <Navigate to="/qc/planing/list" replace />, index: true },
+        //         {
+        //           path: 'list',
+        //           element: <QCPlaning />,
+        //         },
+        //       ],
+        //     },
+        //     {
+        //       path: 'inspection',
+        //       children: [
+        //         { element: <Navigate to="/qc/inspection/list" replace />, index: true },
+        //         {
+        //           path: 'list',
+        //           element: <QCInspectionList />
+        //           ,
+        //         },
+        //         { path: 'detail/:name', element: <QCInspectionDetail /> },
+        //       ],
+        //     },
+        //     {
+        //       path: 'production_activity',
+        //       children: [
+        //         { element: <Navigate to="/qc/production_activity/list" replace />, index: true },
+        //         {
+        //           path: 'list',
+        //           element: <QCProductionActivity />,
+        //         },
+        //         { path: 'detail/:name', element: <QCProductionActivityDetail /> },
+        //       ],
+        //     },
+        //   ],
+        // },
 
-        {
-          path: 'compliance',
-          children: [
-            {
-              path: 'audit',
-              children: [
-                { element: <Navigate to="/compliance/audit/list" replace />, index: true },
-                {
-                  path: 'list',
-                  element: <ComplianceAuditList />,
-                },
-                {
-                  path: 'detail/:name',
-                  element: <ComplianceAuditDetail />,
-                },
-                { path: 'detail/:name/section', element: <ComplianceAuditSection /> },
-                { path: 'detail/:name/section/info', element: <ComplianceAuditSectionDetail /> },
-                { path: 'factory_info/:name', element: <ComplianceAuditFactoryInfo /> },
-              ],
-            },
-            {
-              path: 'schedule',
-              children: [
-                { element: <Navigate to="/compliance/schedule/list" replace />, index: true },
-                { path: 'list', element: <ComplianceSchedule /> },
-                { path: 'detail/:name', element: <ComplianceSchedule /> },
-              ],
-            },
-            {
-              path: 'approval',
-              children: [
-                { element: <Navigate to="/compliance/approval/list" replace />, index: true },
-                { path: 'list', element: <ComplianceApproval /> },
-                { path: 'detail/:name', element: <ApprovalDetail /> },
-              ],
-            },
-            {
-              path: 'factory_certificate',
-              children: [
-                { element: <Navigate to="/compliance/factory_certificate/list" replace />, index: true },
-                { path: 'list', element: <FactoryCertificate /> },
-                { path: 'detail/:name', element: <FactoryCertificate /> },
-              ],
-            },
-            {
-              path: 'request',
-              children: [
-                { element: <Navigate to="/compliance/request/list" replace />, index: true },
-                { path: 'list', element: <ComplianceRequest /> },
-                { path: 'detail/:name', element: <ComplianceDetail /> },
-              ],
-            },
-          ],
-        },
-        { path: 'notification', element: <NotificationCenter /> },
-        {
-          path: 'user',
-          children: [
-            { element: <Navigate to="/user/profile" replace />, index: true },
-            { path: 'account', element: <UserAccount /> },
-          ],
-        },
-        {
-          path: 'mqc',
-          children: [
-            { element: <Navigate to="/mqc/list" replace />, index: true },
-            { path: 'list', element: <MQCInspectionList /> },
-            { path: 'detail/:name', element: <MQCDetail /> },
-          ],
-        },
+        // {
+        //   path: 'compliance',
+        //   children: [
+        //     {
+        //       path: 'audit',
+        //       children: [
+        //         { element: <Navigate to="/compliance/audit/list" replace />, index: true },
+        //         {
+        //           path: 'list',
+        //           element: <ComplianceAuditList />,
+        //         },
+        //         {
+        //           path: 'detail/:name',
+        //           element: <ComplianceAuditDetail />,
+        //         },
+        //         { path: 'detail/:name/section', element: <ComplianceAuditSection /> },
+        //         { path: 'detail/:name/section/info', element: <ComplianceAuditSectionDetail /> },
+        //         { path: 'factory_info/:name', element: <ComplianceAuditFactoryInfo /> },
+        //       ],
+        //     },
+        //     {
+        //       path: 'schedule',
+        //       children: [
+        //         { element: <Navigate to="/compliance/schedule/list" replace />, index: true },
+        //         { path: 'list', element: <ComplianceSchedule /> },
+        //         { path: 'detail/:name', element: <ComplianceSchedule /> },
+        //       ],
+        //     },
+        //     {
+        //       path: 'approval',
+        //       children: [
+        //         { element: <Navigate to="/compliance/approval/list" replace />, index: true },
+        //         { path: 'list', element: <ComplianceApproval /> },
+        //         { path: 'detail/:name', element: <ApprovalDetail /> },
+        //       ],
+        //     },
+        //     {
+        //       path: 'factory_certificate',
+        //       children: [
+        //         { element: <Navigate to="/compliance/factory_certificate/list" replace />, index: true },
+        //         { path: 'list', element: <FactoryCertificate /> },
+        //         { path: 'detail/:name', element: <FactoryCertificate /> },
+        //       ],
+        //     },
+        //     {
+        //       path: 'request',
+        //       children: [
+        //         { element: <Navigate to="/compliance/request/list" replace />, index: true },
+        //         { path: 'list', element: <ComplianceRequest /> },
+        //         { path: 'detail/:name', element: <ComplianceDetail /> },
+        //       ],
+        //     },
+        //   ],
+        // },
+        // { path: 'notification', element: <NotificationCenter /> },
+        // {
+        //   path: 'user',
+        //   children: [
+        //     { element: <Navigate to="/user/profile" replace />, index: true },
+        //     { path: 'account', element: <UserAccount /> },
+        //   ],
+        // },
+        // {
+        //   path: 'mqc',
+        //   children: [
+        //     { element: <Navigate to="/mqc/list" replace />, index: true },
+        //     { path: 'list', element: <MQCInspectionList /> },
+        //     { path: 'detail/:name', element: <MQCDetail /> },
+        //   ],
+        // },
         {
           path: 'tqa',
           children: [
@@ -297,38 +297,31 @@ export default function Router() {
             { path: 'tqa_dashboard', element: <TQADashboard /> },
           ],
         },
-        // {
-        //   path: 'tqa',
-        //   children: [
-        //     { element: <Navigate to="/tqa/map/overall" replace />, index: true },
-        //     { path: 'map/overall', element: <TQAMonthlyPlan /> },
-        //   ],
-        // },
       ],
     },
-    {
-      path: '/tqa',
-      element: (
-        <AuthGuard>
-          <DashboardNoHeader />
-        </AuthGuard>
-      ),
-      children: [
-        { element: <Navigate to="/tqa/map/overall" replace />, index: true },
-        {
-          path: 'map/overall', element:
-            <PageRoleBasedGuard>
-              <TQAMonthlyPlan />
-            </PageRoleBasedGuard>
-        },
-        {
-          path: 'map/factory_profile', element:
-            // <PageRoleBasedGuard>
-            <TQAFactoryProfile />
-          // </PageRoleBasedGuard>
-        },
-      ],
-    },
+    // {
+    //   path: '/tqa',
+    //   element: (
+    //     <AuthGuard>
+    //       <DashboardNoHeader />
+    //     </AuthGuard>
+    //   ),
+    //   children: [
+    //     { element: <Navigate to="/tqa/map/overall" replace />, index: true },
+    //     {
+    //       path: 'map/overall', element:
+    //         <PageRoleBasedGuard>
+    //           <TQAMonthlyPlan />
+    //         </PageRoleBasedGuard>
+    //     },
+    //     {
+    //       path: 'map/factory_profile', element:
+    //         // <PageRoleBasedGuard>
+    //         <TQAFactoryProfile />
+    //       // </PageRoleBasedGuard>
+    //     },
+    //   ],
+    // },
 
     // Ofline mode;
     {
