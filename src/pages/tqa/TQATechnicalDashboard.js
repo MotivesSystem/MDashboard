@@ -1133,7 +1133,7 @@ const TQADasboard3DTop5WorstEmployeeWeek = ({ dataTop53DWorstWeek = [] }) => {
 }
 
 
-const TQADashboard = () => {
+const TQATechnicalDashboard = () => {
 
   // components states;
 
@@ -1209,6 +1209,7 @@ const TQADashboard = () => {
             openOnFieldClick
             showDropDownButton={false}
             showClearButton={false}
+            acceptCustomValue={false}
           />
 
           <Typography>~</Typography>
@@ -1240,6 +1241,7 @@ const TQADashboard = () => {
             activeStateEnabled={false}
             openOnFieldClick
             disabledDates={(data) => disableDates(data)}
+            acceptCustomValue={false}
           />
 
         </Stack>
@@ -1265,4 +1267,4 @@ const TQADashboard = () => {
 };
 
 
-export default TQADashboard;
+export default TQATechnicalDashboard;

@@ -28,7 +28,6 @@ import PageRoleBasedGuard from '../guards/PageRoleBasedGuard';
 import InvalidDevicePage from '../pages/InvalidDevicePage';
 import MQCDetail from '../pages/mqc/MQCDetail';
 import MQCInspectionList from '../pages/mqc/MQCInspectionList';
-import TQADashboard from '../pages/tqa/tqa_dashboard';
 import NotificationCenter from '../pages/notification/NotificationCenter';
 import QCInspectionDetail from '../pages/qc/QcInspectionDetail';
 import QCInspectionList from '../pages/qc/QCInspectionList';
@@ -294,7 +293,7 @@ export default function Router() {
           path: 'tqa',
           children: [
             { element: <Navigate to="/tqa/tqa_dashboard" replace />, index: true },
-            { path: 'tqa_dashboard', element: <TQADashboard /> },
+            { path: 'tqa_dashboard', element: <TQATechnicalDashboard /> },
             { path: 'sample_statistics', element: <TQASampleStatistics /> },
           ],
         },
@@ -416,6 +415,7 @@ const QCProductionActivityDetail = Loadable(lazy(() => import('../pages/qc/QCPro
 // TQA
 const TQAMonthlyPlan = Loadable(lazy(() => import('../pages/tqa/TQAMonthlyPlan')));
 const TQAFactoryProfile = Loadable(lazy(() => import('../pages/tqa/TQAFactoryProfile')));
+const TQATechnicalDashboard = Loadable(lazy(() => import('../pages/tqa/TQATechnicalDashboard')));
 const TQASampleStatistics = Loadable(lazy(() => import('../pages/tqa/SampleStatistics')));
 
 // MQC

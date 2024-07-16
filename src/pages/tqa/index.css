@@ -1,0 +1,8 @@
+.tqa-dropdown-date .dx-dropdowneditor.dx-dropdowneditor-field-clickable,
+.dx-dropdowneditor.dx-dropdowneditor-field-clickable .dx-texteditor-input {
+    color: blue !important;
+}
+
+.tqa-dropdown-date .dx-dropdowneditor-icon {
+    color: blue !important;
+}
