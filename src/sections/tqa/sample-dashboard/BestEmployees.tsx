@@ -1,41 +1,10 @@
-import { Avatar, Box, Card, LinearProgress, LinearProgressProps, Skeleton, Stack, Typography, useTheme } from '@mui/material';
+import { Avatar, Box, Card, Stack, Typography, useTheme } from '@mui/material';
 import axios from 'axios';
 import { useEffect, useState } from 'react';
 // components
 import Iconify from "../../../components/Iconify";
-
-// ----------------------------------------------------------------
-function LinearProgressWithLabel(props: LinearProgressProps & { value: number, name: string }) {
-    return (
-        <Box sx={{ display: 'flex', alignItems: 'center' }}>
-
-            <Box sx={{ minWidth: 35, }}>
-                <Typography variant="body2" color="black" sx={{ fontSize: 12 }}>{props?.name}</Typography>
-            </Box>
-
-            <Box sx={{ width: '90%', }}>
-                <LinearProgress variant="determinate"  {...props} sx={{
-                    width: '100%',
-                    // "& .MuiLinearProgress-bar": {
-                    //     backgroundColor: "#6ce5e8 !important",
-                    // },
-                    "& .MuiLinearProgress-barColorPrimary": {
-                        backgroundColor: "#0080b5 !important",
-                    },
-                    height: 10,
-                }}
-                    value={generateProgressValue(props.value)}
-                />
-            </Box>
-
-            <Box sx={{ minWidth: 35, ml: 1 }}>
-                <Typography variant="body2" color="black" sx={{ fontSize: 12 }}>{`${Math.round(
-                    props.value,
-                )}%`}</Typography>
-            </Box>
-        </Box>
-    );
-}
+import LinearProgressWithLabel from "./LinearProgressWithLabel.tsx";
+import SkeletonSampleStatistics from './SkeletonSampleStatistics.tsx';
 
 
 // ----------------------------------------------------------------
@@ -185,39 +154,32 @@ export default function BestEmployees({ startDate = "", endDate = "" }) {
 
 
 
-// ----------------------------------------------------------------
-const SkeletonSampleStatistics = () => {
-    return (
-        <Stack display={'grid'} gridTemplateColumns={'1fr 1fr 1fr 1fr'} columnGap={2} rowGap={2} justifyContent='center' alignItems='center'>
-            {
-                [...new Array(10)].map((_, index) => {
-                    return (
-                        <Stack key={index} display={'flex'} direction={'row'} justifyContent='center' alignContent='center' spacing={1}>
-                            <Box display={'flex'} justifyContent={'center'} alignItems={'center'} height={'100%'}>
-                                <Skeleton variant='rounded' width={50} height={50} />
-                            </Box>
+// // ----------------------------------------------------------------
+// const SkeletonSampleStatistics = () => {
+//     return (
+//         <Stack display={'grid'} gridTemplateColumns={'1fr 1fr 1fr 1fr'} columnGap={2} rowGap={2} justifyContent='center' alignItems='center'>
+//             {
+//                 [...new Array(10)].map((_, index) => {
+//                     return (
+//                         <Stack key={index} display={'flex'} direction={'row'} justifyContent='center' alignContent='center' spacing={1}>
+//                             <Box display={'flex'} justifyContent={'center'} alignItems={'center'} height={'100%'}>
+//                                 <Skeleton variant='rounded' width={50} height={50} />
+//                             </Box>
 
-                            <Stack spacing={1} height={'100%'}>
-                                <Skeleton variant='rectangular' height={10} width={60} sx={{ borderRadius: 1 }} />
-                                <Skeleton variant='rectangular' height={10} width={60} sx={{ borderRadius: 1 }} />
-                            </Stack>
-                            <Box height={'100%'}>
-                                <Skeleton variant='rectangular' height={50} width={50} />
-                            </Box>
-                        </Stack>
-                    );
-                }
-                )
-            }
-        </Stack>
-    )
-}
+//                             <Stack spacing={1} height={'100%'}>
+//                                 <Skeleton variant='rectangular' height={10} width={60} sx={{ borderRadius: 1 }} />
+//                                 <Skeleton variant='rectangular' height={10} width={60} sx={{ borderRadius: 1 }} />
+//                             </Stack>
+//                             <Box height={'100%'}>
+//                                 <Skeleton variant='rectangular' height={50} width={50} />
+//                             </Box>
+//                         </Stack>
+//                     );
+//                 }
+//                 )
+//             }
+//         </Stack>
+//     )
+// }
 
 
-const generateProgressValue = (value) => {
-    const valueNumber = Number(value);
-    if (valueNumber < 100) {
-        return valueNumber
-    }
-    return 100
-}

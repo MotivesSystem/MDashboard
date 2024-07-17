@@ -97,7 +97,7 @@ export default function MonthlyDefect({ startDate = "", endDate = "" }) {
             {inspectionDefect.length > 0 &&
               <PieChart
                 dataSource={inspectionDefect}
-                palette="Bright"
+                palette="Vintage"
                 // title={`Lỗi thường gặp tháng ${moment(endDate).month() + 1}`}
                 showZeroes
                 resolveLabelOverlapping="shift"

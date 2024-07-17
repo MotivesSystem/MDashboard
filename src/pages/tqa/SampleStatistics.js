@@ -32,6 +32,7 @@ import uuidv4 from '../../utils/uuidv4';
 // config
 import { NOTCH_HEIGHT } from '../../config';
 import "./index.css"
+import { DASHBOARD_COLORS } from '../../sections/tqa/technical-dashboard/index.tsx';
 
 
 
@@ -84,7 +85,7 @@ function SampleStatistics() {
             <Stack direction="row" justifyContent={'flex-start'} alignItems={'center'} p={1}>
 
                 <Box width={'33%'}>
-                    <Typography variant='h3' fontWeight='bold' color="#0080b5">SAMPLE STATISTICS</Typography>
+                    <Typography variant='h3' fontWeight='bold' color={DASHBOARD_COLORS.text.title}>SAMPLE STATISTICS</Typography>
                 </Box>
 
                 <Stack direction="row" justifyContent={'center'} alignItems={'center'} width={'33%'}>
@@ -107,9 +108,6 @@ function SampleStatistics() {
                                 maxHeight: "40px !important",
                             },
                             border: 'none',
-                            // "&.dx-texteditor-input": {
-                            //     color: 'blue !important',
-                            // }
                         }}
 
                         value={startDate}
@@ -199,9 +197,6 @@ function SampleStatistics() {
                             endDate={stringEndDate}
                         />
                     </Grid>
-                    {/* <Grid>
-                        <Divider variant='full' orientation='vertical' />
-                    </Grid> */}
 
                     <Grid item xs={12} md={4}>
                         <MonthlyDefect

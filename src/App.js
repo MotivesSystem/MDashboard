@@ -46,21 +46,21 @@ export default function App() {
   const platform = Capacitor.getPlatform();
 
   // error handlers
-  const [error, errorInfo] = useErrorBoundary(
-    (error, errorInfo) => {
-      if (pathname !== "/error" && error) {
-        navigate('/error', {
-          state: {
-            error: {
-              message: error?.message,
-              pathname,
-              componentStack: errorInfo.componentStack,
-            }
-          }
-        });
-      }
-    }
-  );
+  // const [error, errorInfo] = useErrorBoundary(
+  //   (error, errorInfo) => {
+  //     if (pathname !== "/error" && error) {
+  //       navigate('/error', {
+  //         state: {
+  //           error: {
+  //             message: error?.message,
+  //             pathname,
+  //             componentStack: errorInfo.componentStack,
+  //           }
+  //         }
+  //       });
+  //     }
+  //   }
+  // );
 
   // for silient renew refresh token
   useSilentAuth();
