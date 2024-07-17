@@ -1189,7 +1189,7 @@ const TQATechnicalDashboard = () => {
             Report Date
           </Typography>
 
-          <Iconify icon={"ic:baseline-info"} sx={{ fontSize: 20, color: 'blue', ml: 1 }} />:
+          <Iconify icon={"ic:baseline-info"} sx={{ fontSize: 20, color: DASHBOARD_COLORS.text.title, ml: 1 }} />:
 
           <DateBox
             type="date"

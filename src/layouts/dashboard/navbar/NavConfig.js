@@ -118,7 +118,7 @@ const navConfig = [
       {
         title: 'TQA',
         path: PATH_APP.tqa.overall,
-        icon: ICONS.tqa,
+        icon: ICONS.analytics,
         id: 'tqa',
         children: [
           // { title: 'Monthly Production', path: PATH_APP.tqa.overall, id: 'tqa' },
