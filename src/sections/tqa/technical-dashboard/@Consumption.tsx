@@ -12,7 +12,7 @@ import TopBestEmployees from './TopBestEmployees.tsx';
 const baseHosting = "https://test-dashboard-api.motivesfareast.com";
 
 
-export default function DesignDashBoard({ startDate = "", endDate = "", }: { startDate: string, endDate: string }) {
+export default function Consumption({ startDate = "", endDate = "", }: { startDate: string, endDate: string }) {
 
     // Loading
     const [loadingDesignChart, setLoadingDesignChart] = useState(false);
@@ -283,79 +283,17 @@ export default function DesignDashBoard({ startDate = "", endDate = "", }: { sta
         >
             <Stack spacing={2}>
                 <Stack direction={'row'} justifyContent={'space-between'} px={1}>
-                    <Stack direction={'row'} justifyContent="center" spacing={3} alignContent={'center'}>
-                        <Typography variant='h6'>Design</Typography>
-                        <LinearProgressWithLabel value={dataDesign?.percent} />
+                    <Stack direction={'row'} justifyContent="center" spacing={2} alignContent={'center'}>
+                        <Typography variant='h6'>Consumption</Typography>
+                        {/* <LinearProgressWithLabel value={dataDesign?.percent} width={150}/> */}
                     </Stack>
-
-                    <Stack spacing={1} direction={'row'}>
-                        <Typography variant='h6'>Total Qty</Typography>
-                        <Typography variant='h6'>{fNumber(dataDesign?.total)}</Typography>
+                    <Stack direction={'row'} justifyContent="center" spacing={2} alignContent={'center'}>
+                        {/* <Typography variant='h6'>Consumption</Typography> */}
+                        <LinearProgressWithLabel value={dataDesign?.percent} width={150}/>
                     </Stack>
                 </Stack>
 
                 <Box width={'100%'} justifyContent="center">
-                    <TechPieChart
-                        dataSource={dataDesign?.data}
-                        loading={loadingDesignChart}
-                        series={{
-                            argumentField: 'label',
-                            valueField: 'value',
-                            // label: {
-                            //     visible: true,
-                            //     customizeText: (arg) => customizeLabelTextCharDesign(arg),
-                            //     position: 'columns',
-                            //     radialOffset: "-20px",
-                            //     backgroundColor: 'transparent',
-                            //     connector: {
-                            //         visible: false,
-                            //     },
-                            //     font: {
-                            //         weight: 'bold',
-                            //         color: 'black',
-                            //         size: 12,
-                            //     }
-                            // }
-                        }}
-                        showLegend={false}
-                        customizeLabelText={customizeLabelTextCharDesign}
-                        height={280}
-                    />
-                </Box>
-
-                <Stack direction={'row'} width={'100%'} justifyContent="space-evenly" alignItems='center'>
-
-                    <TechPieChart
-                        dataSource={dataChartTechPack}
-                        loading={loadingTechPackChart}
-                        series={{
-                            argumentField: 'label',
-                            valueField: 'value',
-                        }}
-                        showLegend={false}
-                        customizeLabelText={customizeLabelTextCharDesign}
-                        height={150}
-                        width={160}
-                        size={8}
-                        radialOffset={300}
-                    />
-
-                    <TechPieChart
-                        dataSource={dataChartPattern}
-                        loading={loadingParternChart}
-                        series={{
-                            argumentField: 'label',
-                            valueField: 'value',
-                        }}
-                        showLegend={false}
-                        customizeLabelText={customizeLabelTextCharDesign}
-                        height={150}
-                        width={160}
-                        size={8}
-                        radialOffset={100}
-                        connectorVisible
-                    />
-
                     <TechPieChart
                         dataSource={dataChartConsumtion}
                         loading={loadingConsumtionChart}
@@ -363,32 +301,26 @@ export default function DesignDashBoard({ startDate = "", endDate = "", }: { sta
                             argumentField: 'label',
                             valueField: 'value',
                         }}
-                        showLegend={false}
-                        customizeLabelText={customizeLabelTextCharDesign}
-                        height={150}
-                        width={160}
-                        size={8}
-                        radialOffset={300}
-                        connectorVisible
+                        showLegend
+                        // customizeLabelText={customizeLabelTextCharDesign}
+                        height={300}
+                        width={300}
                     />
+                </Box>
+
+                <Stack spacing={1} direction={'row'} justifyContent={"flex-end"}>
+                    <Typography variant='h6'>Total Qty</Typography>
+                    <Typography variant='h6'>{fNumber(dataDesign?.total)}</Typography>
                 </Stack>
 
                 <Stack spacing={1}>
                     <TopBestEmployees
-                        loadingWeekly={loadingTop5DesignBestWeek}
+                        // loadingWeekly={loadingTop5DesignBestWeek}
                         loadingYearly={loadingTop5DesignBestYTD}
-                        dataWeekly={dataTop5DesignBestWeek}
+                        // dataWeekly={dataTop5DesignBestWeek}
                         dataYearly={dataTop5DesignBestYTD}
                         endDate={endDate}
-                        title="Top 5 Best Employees"
-                    />
-                    <TopBestEmployees
-                        loadingWeekly={loadingTop5DesignWorstWeek}
-                        loadingYearly={loadingTop5DesignWorstYTD}
-                        dataWeekly={dataTop5DesignWorstWeek}
-                        dataYearly={dataTop5DesignWorstYTD}
-                        endDate={endDate}
-                        title="Top 5 Worst Employees"
+                        title="Employee List"
                     />
                 </Stack>
 

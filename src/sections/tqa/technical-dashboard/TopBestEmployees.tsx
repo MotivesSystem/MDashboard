@@ -32,11 +32,11 @@ export default function TopBestEmployees({
                 <Typography variant='h5' color={DASHBOARD_COLORS.text.title} fontWeight={'bold'}>{title}</Typography>
             </Stack>
 
-            <Stack>
+            {/* <Stack>
                 <Typography pl={1} color={DASHBOARD_COLORS.text.title} fontWeight={'bold'}>{`By Year - ${moment(endDate).year()}`}</Typography>
                 {
                     !loadingWeekly ?
-                        <Stack display={'grid'} gridTemplateColumns={'1fr 1fr 1fr 1fr 1fr'} columnGap={1} rowGap={1} justifyContent='center' alignItems='center' py={1} minHeight={100} >
+                        <Stack display={'grid'} gridTemplateColumns={'1fr 1fr 1fr'} columnGap={1} rowGap={1} justifyContent='center' alignItems='center' py={1} minHeight={100} >
                             {dataWeekly.length > 0 ?
                                 dataWeekly.map((item, index) => (
                                     <Stack display={'flex'} direction={'row'} justifyContent='center' alignContent='center' spacing={1} key={`${item?.employee_id}-${index}`} height={'100%'} position={'relative'}>
@@ -52,15 +52,15 @@ export default function TopBestEmployees({
                             }
                         </Stack>
                         :
-                        <SkeletonSampleStatistics listLength={5} gridTemplateColumns='1fr 1fr 1fr 1fr 1fr' />
+                        <SkeletonSampleStatistics listLength={3} gridTemplateColumns='1fr 1fr 1fr' />
                 }
-            </Stack>
+            </Stack> */}
 
             <Stack>
-                <Typography pl={1} color={DASHBOARD_COLORS.text.title} fontWeight={'bold'}>{`By Week - ${moment(endDate).week()}`}</Typography>
+                {/* <Typography pl={1} color={DASHBOARD_COLORS.text.title} fontWeight={'bold'}>{`By Week - ${moment(endDate).week()}`}</Typography> */}
                 {
                     !loadingYearly ?
-                        <Stack display={'grid'} gridTemplateColumns={'1fr 1fr 1fr 1fr 1fr'} columnGap={1} rowGap={1} justifyContent='center' alignItems='center' py={1} minHeight={100}>
+                        <Stack display={'grid'} gridTemplateColumns={'1fr 1fr 1fr'} columnGap={1} rowGap={1} justifyContent='center' alignItems='center' py={1} minHeight={100}>
                             {dataYearly.length > 0 ?
                                 dataYearly.map((item, index) => (
                                     <Stack display={'flex'} direction={'row'} justifyContent='center' alignContent='center' spacing={1} key={`${item?.employee_id}-${index}`} height={'100%'} position={'relative'}>
@@ -76,7 +76,7 @@ export default function TopBestEmployees({
                             }
                         </Stack>
                         :
-                        <SkeletonSampleStatistics listLength={5} gridTemplateColumns='1fr 1fr 1fr 1fr 1fr' />
+                        <SkeletonSampleStatistics listLength={3} gridTemplateColumns='1fr 1fr 1fr 1fr 1fr' />
                 }
             </Stack>
 

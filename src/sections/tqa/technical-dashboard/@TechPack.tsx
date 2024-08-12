@@ -12,10 +12,13 @@ import TopBestEmployees from './TopBestEmployees.tsx';
 const baseHosting = "https://test-dashboard-api.motivesfareast.com";
 
 
-export default function ThreeDDashBoard({ startDate = "", endDate = "", }: { startDate: string, endDate: string }) {
+export default function TechPack({ startDate = "", endDate = "", }: { startDate: string, endDate: string }) {
 
     // Loading
     const [loadingDesignChart, setLoadingDesignChart] = useState(false);
+    const [loadingTechPackChart, setLoadingTechPackChart] = useState(false);
+    const [loadingParternChart, setLoadingParternChart] = useState(false);
+    const [loadingConsumtionChart, setLoadingConsumtionChart] = useState(false);
     const [loadingTop5DesignBestWeek, setLoadingTop5DesignBestWeek] = useState(false);
     const [loadingTop5DesignBestYTD, setLoadingTop5DesignBestYTD] = useState(false);
     const [loadingTop5DesignWorstWeek, setLoadingTop5DesignWorstWeek] = useState(false);
@@ -24,6 +27,11 @@ export default function ThreeDDashBoard({ startDate = "", endDate = "", }: { sta
     // data source
     const [dataDesign, setDataDesign] = useState([]);
 
+    const [dataChartTechPack, setDataChartTechPack] = useState([]);
+
+    const [dataChartPattern, setDataChartPattern] = useState([]);
+
+    const [dataChartConsumtion, setDataChartConsumtion] = useState([]);
 
     const [dataTop5DesignBestWeek, setDataTop5DesignBestWeek] = useState([]);
 
@@ -33,43 +41,38 @@ export default function ThreeDDashBoard({ startDate = "", endDate = "", }: { sta
 
     const [dataTop5DesignWorstYTD, setDataTop5DesignWorstYTD] = useState([]);
 
-
-
-    const getDataChart = useCallback(async () => {
+    const getDataChartTechPack = useCallback(async () => {
         try {
-            setLoadingDesignChart(true);
+            setLoadingTechPackChart(true)
             const postData = {
-                "module": "PROCESS_3D",
+                "design_document": "TECH_PACK",
                 // "start_date": startDate,
                 "start_date": "2020/01/01",
                 "end_date": endDate,
             };
 
-            const response = await axios.post(`${baseHosting}/api/dashboard/get-pie-chart-data`, postData)
-            // console.log(response);
+            const response = await axios.post(`${baseHosting}/api/dashboard/get-design-planning-chart-info`, postData)
+            
             if (response && response.data.result === "success") {
-                const newData = response.data.reply.items.map((val, i) => {
+                const items = response.data.reply.items.map((val, i) => {
                     return { value: val.value, label: val.name, color: setColorSeries(val.name) }
                 });
 
-                const newDataDesign = {
+                const newTechPack = {
                     total: response.data.reply.total_sum,
                     percent: response.data.reply.percentage,
-                    data: newData
+                    data: items
                 }
 
-                setDataDesign(newDataDesign);
+                setDataChartTechPack(newTechPack);
             }
-            setLoadingDesignChart(false);
+            setLoadingTechPackChart(false);
         }
         catch (error) {
             console.error(error);
-            setLoadingDesignChart(false);
+            setLoadingTechPackChart(false);
         }
     }, [startDate, endDate,]);
-
-
-
 
     const getDataTop5DesignBestWeek = useCallback(async () => {
         try {
@@ -80,7 +83,7 @@ export default function ThreeDDashBoard({ startDate = "", endDate = "", }: { sta
                 "end_date": endDate,
                 "top_number": 5,
                 "employee_list_type": "BEST",
-                "module": "PROCESS_3D",
+                "module": "DESIGN_PLANNING"
             };
 
             const response = await axios.post(`${baseHosting}/api/dashboard/get-top-employees-design-planning-3d-process-by-week`, postData);
@@ -105,11 +108,11 @@ export default function ThreeDDashBoard({ startDate = "", endDate = "", }: { sta
                 "end_date": endDate,
                 "top_number": 100,
                 "employee_list_type": "BEST",
-                "module": "PROCESS_3D",
+                "module": "DESIGN_PLANNING"
             };
 
             const response = await axios.post(`${baseHosting}/api/dashboard/get-top-employees-design-planning-3d-process-by-year`, postData);
-
+   
             if (response && response.data.result === "success") {
                 setDataTop5DesignBestYTD(response.data.reply || []);
             }
@@ -131,7 +134,7 @@ export default function ThreeDDashBoard({ startDate = "", endDate = "", }: { sta
                 "end_date": endDate,
                 "top_number": 5,
                 "employee_list_type": "WORST",
-                "module": "PROCESS_3D",
+                "module": "DESIGN_PLANNING"
             };
 
             const response = await axios.post(`${baseHosting}/api/dashboard/get-top-employees-design-planning-3d-process-by-week`, postData);
@@ -158,7 +161,7 @@ export default function ThreeDDashBoard({ startDate = "", endDate = "", }: { sta
                 "end_date": endDate,
                 "top_number": 5,
                 "employee_list_type": "WORST",
-                "module": "PROCESS_3D",
+                "module": "DESIGN_PLANNING"
             };
 
             const response = await axios.post(`${baseHosting}/api/dashboard/get-top-employees-design-planning-3d-process-by-year`, postData);
@@ -174,11 +177,11 @@ export default function ThreeDDashBoard({ startDate = "", endDate = "", }: { sta
     }, [startDate, endDate,]);
 
     useEffect(() => {
-        getDataChart();
-        getDataTop5DesignBestWeek();
+        getDataChartTechPack();
+        // getDataTop5DesignBestWeek();
         getDataTop5DesignBestYTD();
-        getDataTop5DesignWorstWeek();
-        getDataTop5DesignWorstYTD();
+        // getDataTop5DesignWorstWeek();
+        // getDataTop5DesignWorstYTD();
     }, [startDate, endDate,]);
 
 
@@ -188,29 +191,27 @@ export default function ThreeDDashBoard({ startDate = "", endDate = "", }: { sta
         return `${arg.argumentText} (${arg.valueText})`
     }
 
-    // console.log(dataDesign, dataTop5DesignBestWeek, dataTop5DesignBestYTD, dataTop5DesignWorstWeek, dataTop5DesignWorstYTD);
-
-
     return (
         <Card
             sx={{ p: 1, pb: 3 }}
         >
             <Stack spacing={2}>
                 <Stack direction={'row'} justifyContent={'space-between'} px={1}>
-                    <Stack direction={'row'} justifyContent="center" spacing={3} alignContent={'center'}>
-                        <Typography variant='h6'>3D</Typography>
-                        {/* <LinearProgressWithLabel value={dataDesign?.percent} /> */}
+                    <Stack direction={'row'} justifyContent="center" spacing={2} alignContent={'center'} >
+                        <Typography variant='h6'>Techpack</Typography>
+                        {/* <LinearProgressWithLabel value={dataDesign?.percent} width={200}/> */}
                     </Stack>
-                    <Stack direction={'row'} justifyContent="center" spacing={3} alignContent={'center'}>
-                        {/* <Typography variant='h6'>3D</Typography> */}
-                        <LinearProgressWithLabel value={dataDesign?.percent} width={150} />
+                    <Stack direction={'row'} justifyContent="center" spacing={2} alignContent={'center'} >
+                        {/* <Typography variant='h6'>Techpack</Typography> */}
+                        <LinearProgressWithLabel value={dataChartTechPack?.percent} width={150} />
                     </Stack>
+
                 </Stack>
 
                 <Box width={'100%'} justifyContent="center">
                     <TechPieChart
-                        dataSource={dataDesign?.data}
-                        loading={loadingDesignChart}
+                        dataSource={dataChartTechPack?.data}
+                        loading={loadingTechPackChart}
                         series={{
                             argumentField: 'label',
                             valueField: 'value',
@@ -224,7 +225,7 @@ export default function ThreeDDashBoard({ startDate = "", endDate = "", }: { sta
 
                 <Stack spacing={1} direction={'row'} justifyContent={'flex-end'}>
                     <Typography variant='h6'>Total Qty</Typography>
-                    <Typography variant='h6'>{fNumber(dataDesign?.total)}</Typography>
+                    <Typography variant='h6'>{fNumber(dataChartTechPack?.total)}</Typography>
                 </Stack>
 
                 <Stack spacing={1}>

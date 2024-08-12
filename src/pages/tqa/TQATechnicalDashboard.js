@@ -22,7 +22,9 @@ import Page from '../../components/Page';
 import Iconify from '../../components/Iconify';
 import IconName from '../../utils/iconsName';
 import { DASHBOARD_COLORS } from '../../sections/tqa/technical-dashboard/index.tsx';
-import DesignDashBoard from '../../sections/tqa/technical-dashboard/@DesignDashBoard.tsx';
+import TechPack from '../../sections/tqa/technical-dashboard/@TechPack.tsx';
+import Pattern from '../../sections/tqa/technical-dashboard/@Pattern.tsx';
+import Consumption from '../../sections/tqa/technical-dashboard/@Consumption.tsx';
 import ThreeDDashBoard from '../../sections/tqa/technical-dashboard/@ThreeDDashBoard.tsx';
 import SampleProductionDashBoard from '../../sections/tqa/technical-dashboard/@SampleProduction.tsx';
 
@@ -1257,15 +1259,23 @@ const TQATechnicalDashboard = () => {
       <Box>
 
         <Grid container p={1} spacing={2}>
-          <Grid item xs={12} md={4}>
+          <Grid item xs={12} md={2.4}>
             {/* <TQADasboardDesign startDate={stringStartDate} endDate={stringEndDate} /> */}
-            <DesignDashBoard startDate={stringStartDate} endDate={stringEndDate} />
+            <TechPack startDate={stringStartDate} endDate={stringEndDate} />
           </Grid>
-          <Grid item xs={12} md={4}>
+          <Grid item xs={12} md={2.4}>
+            {/* <TQADasboardDesign startDate={stringStartDate} endDate={stringEndDate} /> */}
+            <Pattern startDate={stringStartDate} endDate={stringEndDate} />
+          </Grid>
+          <Grid item xs={12} md={2.4}>
+            {/* <TQADasboardDesign startDate={stringStartDate} endDate={stringEndDate} /> */}
+            <Consumption startDate={stringStartDate} endDate={stringEndDate} />
+          </Grid>
+          <Grid item xs={12} md={2.4}>
             {/* <TQADasboard3D startDate={stringStartDate} endDate={stringEndDate} /> */}
             <ThreeDDashBoard startDate={stringStartDate} endDate={stringEndDate} />
           </Grid>
-          <Grid item xs={12} md={4}>
+          <Grid item xs={12} md={2.4}>
             {/* <TQADasboardSampleProduction startDate={stringStartDate} endDate={stringEndDate} /> */}
             <SampleProductionDashBoard
               startDate={stringStartDate} endDate={stringEndDate}

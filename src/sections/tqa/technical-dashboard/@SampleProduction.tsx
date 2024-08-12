@@ -101,7 +101,7 @@ export default function SampleProductionDashBoard({ startDate = "", endDate = ""
                 // "start_date": startDate,
                 "start_date": "2020/01/01",
                 "end_date": endDate,
-                "top_number": 5,
+                "top_number": 100,
                 "employee_list_type": "BEST",
                 "module": "SAMPLE_PRODUCT_PLANNING",
             };
@@ -173,10 +173,10 @@ export default function SampleProductionDashBoard({ startDate = "", endDate = ""
 
     useEffect(() => {
         getDataChart();
-        getDataTop5DesignBestWeek();
+        // getDataTop5DesignBestWeek();
         getDataTop5DesignBestYTD();
-        getDataTop5DesignWorstWeek();
-        getDataTop5DesignWorstYTD();
+        // getDataTop5DesignWorstWeek();
+        // getDataTop5DesignWorstYTD();
     }, [startDate, endDate,]);
 
 
@@ -197,16 +197,16 @@ export default function SampleProductionDashBoard({ startDate = "", endDate = ""
                 <Stack direction={'row'} justifyContent={'space-between'} px={1}>
                     <Stack direction={'row'} justifyContent="center" spacing={3} alignContent={'center'}>
                         <Typography variant='h6'>Sample Production</Typography>
-                        <LinearProgressWithLabel value={dataDesign?.percent} />
+                        {/* <LinearProgressWithLabel value={dataDesign?.percent} /> */}
                     </Stack>
 
-                    <Stack spacing={1} direction={'row'}>
-                        <Typography variant='h6'>Total Qty</Typography>
-                        <Typography variant='h6'>{fNumber(dataDesign?.total)}</Typography>
+                    <Stack direction={'row'} justifyContent="center" spacing={3} alignContent={'center'}>
+                        {/* <Typography variant='h6'>Sample Production</Typography> */}
+                        <LinearProgressWithLabel value={dataDesign?.percent} width={150} />
                     </Stack>
                 </Stack>
 
-                <Box width={'100%'} justifyContent="center">
+                <Box width={'100%'} justifyContent="center" sx={{ marginTop: "-13px !important" }}>
                     <TechPieChart
                         dataSource={dataDesign?.data}
                         loading={loadingDesignChart}
@@ -214,29 +214,26 @@ export default function SampleProductionDashBoard({ startDate = "", endDate = ""
                             argumentField: 'label',
                             valueField: 'percent',
                         }}
-                        showLegend={false}
-                        customizeLabelText={customizeLabelTextCharDesign}
-                        height={446}
+                        showLegend
+                        // customizeLabelText={customizeLabelTextCharDesign}
+                        height={300}
+                        width={300}
                     />
                 </Box>
 
+                <Stack spacing={1} direction={'row'} justifyContent={'flex-end'}>
+                    <Typography variant='h6'>Total Qty</Typography>
+                    <Typography variant='h6'>{fNumber(dataDesign?.total)}</Typography>
+                </Stack>
 
                 <Stack spacing={1}>
                     <TopBestEmployees
-                        loadingWeekly={loadingTop5DesignBestWeek}
+                        // loadingWeekly={loadingTop5DesignBestWeek}
                         loadingYearly={loadingTop5DesignBestYTD}
-                        dataWeekly={dataTop5DesignBestWeek}
+                        // dataWeekly={dataTop5DesignBestWeek}
                         dataYearly={dataTop5DesignBestYTD}
                         endDate={endDate}
-                        title="Top 5 Best Employees"
-                    />
-                    <TopBestEmployees
-                        loadingWeekly={loadingTop5DesignWorstWeek}
-                        loadingYearly={loadingTop5DesignWorstYTD}
-                        dataWeekly={dataTop5DesignWorstWeek}
-                        dataYearly={dataTop5DesignWorstYTD}
-                        endDate={endDate}
-                        title="Top 5 Worst Employees"
+                        title="Employee List"
                     />
                 </Stack>
 
