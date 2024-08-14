@@ -24,8 +24,8 @@ export default function MonthlyDefect({ startDate = "", endDate = "" }) {
     try {
       setLoadingInspection(true);
       const postData = {
-        "now_date": '2019/10/01',
-        "top_number": 10,
+        "now_date": '2024/07/31',
+        "top_number": 5,
       }
 
       const result = await axios.post(`https://test-dashboard-api.motivesfareast.com/api/dashboard/get-top-quanlity-inspection-defect-pie-chart`, postData);
@@ -107,11 +107,12 @@ export default function MonthlyDefect({ startDate = "", endDate = "" }) {
                   valueField="value">
                   <Label
                     visible
-                    position="column"
+                    position="inside"
                     overlappingBehavior={"none"}
-                    customizeText={customizeText}
-                    radialOffset={0}
+                    // customizeText={customizeText}
+                    radialOffset={30}
                   >
+                    <Font size={12} weight={600} />
                     <Connector visible width={2} />
                   </Label>
                 </Series>
@@ -128,7 +129,7 @@ export default function MonthlyDefect({ startDate = "", endDate = "" }) {
                 >
                   <Font size={12} />
                 </Legend>
-                <Size height={400} width={'100%'} />
+                <Size height={300} width={'100%'} />
                 <Export enabled={false} />
                 <Margin
                   top={2}

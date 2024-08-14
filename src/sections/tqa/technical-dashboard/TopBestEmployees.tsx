@@ -65,7 +65,7 @@ export default function TopBestEmployees({
                                 dataYearly.map((item, index) => (
                                     <Stack display={'flex'} direction={'row'} justifyContent='center' alignContent='center' spacing={1} key={`${item?.employee_id}-${index}`} height={'100%'} position={'relative'}>
                                         <Stack display={'flex'} justifyContent={'center'} alignItems={'center'} height={'100%'} width={'30%'} spacing={1} >
-                                            <Avatar src='https://mui.com/static/images/avatar/1.jpg' sizes='lg' sx={{ width: 50, height: 50 }} />
+                                            <Avatar src={item?.avatar_url} sizes='lg' sx={{ width: 50, height: 50 }} />
                                             <Typography noWrap variant='body2' textAlign='center' fontWeight='bold' maxWidth={100} sx={{ fontSize: 12, color: theme => theme.palette.success.dark }}>{item?.nick_name}</Typography>
                                             <LinearProgressWithLabel value={item?.performance_avg} width={70} />
                                         </Stack>

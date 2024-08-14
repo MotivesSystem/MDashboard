@@ -15,23 +15,14 @@ const baseHosting = "https://test-dashboard-api.motivesfareast.com";
 export default function TechPack({ startDate = "", endDate = "", }: { startDate: string, endDate: string }) {
 
     // Loading
-    const [loadingDesignChart, setLoadingDesignChart] = useState(false);
     const [loadingTechPackChart, setLoadingTechPackChart] = useState(false);
-    const [loadingParternChart, setLoadingParternChart] = useState(false);
-    const [loadingConsumtionChart, setLoadingConsumtionChart] = useState(false);
     const [loadingTop5DesignBestWeek, setLoadingTop5DesignBestWeek] = useState(false);
     const [loadingTop5DesignBestYTD, setLoadingTop5DesignBestYTD] = useState(false);
     const [loadingTop5DesignWorstWeek, setLoadingTop5DesignWorstWeek] = useState(false);
     const [loadingTop5DesignWorstYTD, setLoadingTop5DesignWorstYTD] = useState(false);
 
     // data source
-    const [dataDesign, setDataDesign] = useState([]);
-
     const [dataChartTechPack, setDataChartTechPack] = useState([]);
-
-    const [dataChartPattern, setDataChartPattern] = useState([]);
-
-    const [dataChartConsumtion, setDataChartConsumtion] = useState([]);
 
     const [dataTop5DesignBestWeek, setDataTop5DesignBestWeek] = useState([]);
 
@@ -52,15 +43,22 @@ export default function TechPack({ startDate = "", endDate = "", }: { startDate:
             };
 
             const response = await axios.post(`${baseHosting}/api/dashboard/get-design-planning-chart-info`, postData)
-            
+
             if (response && response.data.result === "success") {
-                const items = response.data.reply.items.map((val, i) => {
+                const items = response.data.reply.map((val, i) => {
                     return { value: val.value, label: val.name, color: setColorSeries(val.name) }
                 });
 
+                const values = items.map(i => i.value);
+                const totalValue = values.reduce((accumulator, currentValue) => {
+                    return accumulator + currentValue
+                }, 0);
+                const assignedValue = items.find(i => i.label.toLowerCase() === "assigned")?.value
+                const percentValue = totalValue !== 0 ? (assignedValue / totalValue) * 100 : 0
+                
                 const newTechPack = {
-                    total: response.data.reply.total_sum,
-                    percent: response.data.reply.percentage,
+                    total: totalValue,
+                    percent: percentValue,
                     data: items
                 }
 
@@ -108,11 +106,12 @@ export default function TechPack({ startDate = "", endDate = "", }: { startDate:
                 "end_date": endDate,
                 "top_number": 100,
                 "employee_list_type": "BEST",
-                "module": "DESIGN_PLANNING"
+                "module": "DESIGN_PLANNING",
+                "design_document": "TECH_PACK"
             };
 
             const response = await axios.post(`${baseHosting}/api/dashboard/get-top-employees-design-planning-3d-process-by-year`, postData);
-   
+
             if (response && response.data.result === "success") {
                 setDataTop5DesignBestYTD(response.data.reply || []);
             }

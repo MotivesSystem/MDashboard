@@ -21,12 +21,13 @@ export default function BestEmployees({ startDate = "", endDate = "" }) {
 
     const getbestEmployeeWeekly = async () => {
         try {
+            const topNumber = 24
             setLoadingBestEmployeeData(true)
             const postData = {
                 // "start_date": startDate,
                 "start_date": '2024/01/01',
                 "end_date": endDate,
-                "top_number": 12,
+                "top_number": topNumber,
                 "employee_list_type": "BEST",
                 "is_show_year_value": 1,
             }
@@ -36,7 +37,10 @@ export default function BestEmployees({ startDate = "", endDate = "" }) {
             console.log(result.data);
 
             if (result.data.reply.length > 0) {
-                setBestEmployeeWeekly(result.data.reply);
+                const firstHalf = result.data.reply.slice(0, topNumber / 2);
+                const secondHalf = result.data.reply.slice(topNumber / 2);
+                setBestEmployeeWeekly(firstHalf);
+                setWorstEmployeeWeekly(secondHalf);
             }
             setLoadingBestEmployeeData(false)
         } catch (error) {
@@ -74,7 +78,7 @@ export default function BestEmployees({ startDate = "", endDate = "" }) {
 
     useEffect(() => {
         getbestEmployeeWeekly();
-        getWorstEmployeeWeekly();
+        // getWorstEmployeeWeekly();
     }, [startDate, endDate])
 
 
@@ -99,7 +103,7 @@ export default function BestEmployees({ startDate = "", endDate = "" }) {
                                 bestEmployeeWeekly.map((item, index) => (
                                     <Stack display={'flex'} direction={'row'} justifyContent='center' alignContent='center' spacing={1} key={item?.employee_id} height={'100%'} position={'relative'}>
                                         <Stack display={'flex'} justifyContent={'center'} alignItems={'center'} height={'100%'} width={'30%'} spacing={1} >
-                                            <Avatar src='https://mui.com/static/images/avatar/1.jpg' sizes='lg' sx={{ width: 50, height: 50 }} />
+                                            <Avatar src={item?.avatar_url} sizes='lg' sx={{ width: 50, height: 50 }} />
                                             <Typography variant='body2' textAlign='center' fontWeight='bold' maxWidth={75} sx={{ fontSize: 12, color: theme => theme.palette.success.dark }}>{item?.nick_name}</Typography>
                                         </Stack>
 
@@ -126,7 +130,7 @@ export default function BestEmployees({ startDate = "", endDate = "" }) {
                                 worstEmployeeWeekly.map((item, index) => (
                                     <Stack display={'flex'} direction={'row'} justifyContent='center' alignContent='center' spacing={1} key={item?.employee_id} height={'100%'} position={'relative'}>
                                         <Stack display={'flex'} justifyContent={'center'} alignItems={'center'} height={'100%'} width={'30%'} spacing={1} >
-                                            <Avatar src='https://mui.com/static/images/avatar/1.jpg' sizes='lg' sx={{ width: 50, height: 50 }} />
+                                            <Avatar src={item?.avatar_url} sizes='lg' sx={{ width: 50, height: 50 }} />
                                             <Typography variant='body2' textAlign='center' fontWeight='bold' maxWidth={80} sx={{ fontSize: 12, color: theme => theme.palette.success.dark }}>{item?.nick_name}</Typography>
                                         </Stack>
 
