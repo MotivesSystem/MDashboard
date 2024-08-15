@@ -37,8 +37,8 @@ export default function TechPack({ startDate = "", endDate = "", }: { startDate:
             setLoadingTechPackChart(true)
             const postData = {
                 "design_document": "TECH_PACK",
-                // "start_date": startDate,
-                "start_date": "2020/01/01",
+                "start_date": startDate,
+                // "start_date": "2020/01/01",
                 "end_date": endDate,
             };
 
@@ -101,8 +101,8 @@ export default function TechPack({ startDate = "", endDate = "", }: { startDate:
         try {
             setLoadingTop5DesignBestYTD(true);
             const postData = {
-                // "start_date": startDate,
-                "start_date": "2020/01/01",
+                "start_date": startDate,
+                // "start_date": "2020/01/01",
                 "end_date": endDate,
                 "top_number": 100,
                 "employee_list_type": "BEST",

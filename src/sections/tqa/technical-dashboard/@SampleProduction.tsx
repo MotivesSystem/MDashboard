@@ -38,8 +38,8 @@ export default function SampleProductionDashBoard({ startDate = "", endDate = ""
             setLoadingDesignChart(true);
             const postData = {
                 "module": "SAMPLE_PRODUCT_PLANNING",
-                // "start_date": startDate,
-                "start_date": "2020/01/01",
+                "start_date": startDate,
+                // "start_date": "2020/01/01",
                 "end_date": endDate,
             };
 
@@ -98,8 +98,8 @@ export default function SampleProductionDashBoard({ startDate = "", endDate = ""
         try {
             setLoadingTop5DesignBestYTD(true);
             const postData = {
-                // "start_date": startDate,
-                "start_date": "2020/01/01",
+                "start_date": startDate,
+                // "start_date": "2020/01/01",
                 "end_date": endDate,
                 "top_number": 100,
                 "employee_list_type": "BEST",
@@ -151,8 +151,8 @@ export default function SampleProductionDashBoard({ startDate = "", endDate = ""
         try {
             setLoadingTop5DesignWorstYTD(true);
             const postData = {
-                // "start_date": startDate,
-                "start_date": "2020/01/01",
+                "start_date": startDate,
+                // "start_date": "2020/01/01",
                 "end_date": endDate,
                 "top_number": 5,
                 "employee_list_type": "WORST",

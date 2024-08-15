@@ -40,8 +40,8 @@ export default function ThreeDDashBoard({ startDate = "", endDate = "", }: { sta
             setLoadingDesignChart(true);
             const postData = {
                 "module": "PROCESS_3D",
-                // "start_date": startDate,
-                "start_date": "2020/01/01",
+                "start_date": startDate,
+                // "start_date": "2020/01/01",
                 "end_date": endDate,
             };
 
@@ -101,15 +101,17 @@ export default function ThreeDDashBoard({ startDate = "", endDate = "", }: { sta
             setLoadingTop5DesignBestYTD(true);
             const postData = {
                 // "start_date": startDate,
-                "start_date": "2020/01/01",
+                "start_date": "2024/07/01",
                 "end_date": endDate,
                 "top_number": 100,
                 "employee_list_type": "BEST",
                 "module": "PROCESS_3D",
+                "design_document": "EMPTY"
             };
 
-            const response = await axios.post(`${baseHosting}/api/dashboard/get-top-employees-design-planning-3d-process-by-year`, postData);
 
+            const response = await axios.post(`${baseHosting}/api/dashboard/get-top-employees-design-planning-3d-process-by-year`, postData);
+            console.log(response)
             if (response && response.data.result === "success") {
                 setDataTop5DesignBestYTD(response.data.reply || []);
             }
@@ -175,10 +177,10 @@ export default function ThreeDDashBoard({ startDate = "", endDate = "", }: { sta
 
     useEffect(() => {
         getDataChart();
-        getDataTop5DesignBestWeek();
+        // getDataTop5DesignBestWeek();
         getDataTop5DesignBestYTD();
-        getDataTop5DesignWorstWeek();
-        getDataTop5DesignWorstYTD();
+        // getDataTop5DesignWorstWeek();
+        // getDataTop5DesignWorstYTD();
     }, [startDate, endDate,]);
 
 

@@ -37,8 +37,8 @@ export default function Pattern({ startDate = "", endDate = "", }: { startDate: 
             setLoadingParternChart(true);
             const postData = {
                 "design_document": "PATTERN",
-                // "start_date": startDate,
-                "start_date": "2020/01/01",
+                "start_date": startDate,
+                // "start_date": "2020/01/01",
                 "end_date": endDate,
             };
 
@@ -75,8 +75,8 @@ export default function Pattern({ startDate = "", endDate = "", }: { startDate: 
         try {
             setLoadingTop5DesignBestWeek(true);
             const postData = {
-                // "start_date": startDate,
-                "start_date": "2020/01/01",
+                "start_date": startDate,
+                // "start_date": "2020/01/01",
                 "end_date": endDate,
                 "top_number": 5,
                 "employee_list_type": "BEST",
@@ -100,10 +100,10 @@ export default function Pattern({ startDate = "", endDate = "", }: { startDate: 
         try {
             setLoadingTop5DesignBestYTD(true);
             const postData = {
-                // "start_date": startDate,
-                "start_date": "2020/01/01",
+                "start_date": startDate,
+                // "start_date": "2020/01/01",
                 "end_date": endDate,
-                "top_number": 5,
+                "top_number": 100,
                 "employee_list_type": "BEST",
                 "module": "DESIGN_PLANNING",
                 "design_document": "PATTERN",
