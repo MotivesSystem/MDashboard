@@ -85,7 +85,7 @@ export default function MonthlyDefect({ startDate = "", endDate = "" }) {
       sx={{ p: 1, pb: 3 }}
     >
       <Stack justifyContent="flex-start" alignItems={"center"} p={1} direction='row' spacing={1}>
-        <Iconify icon="fluent-emoji-flat:warning" sx={{ fontSize: 25 }} />
+        {/* <Iconify icon="fluent-emoji-flat:warning" sx={{ fontSize: 25 }} /> */}
         <Typography variant='h5' fontWeight={'bold'}>{`Lỗi thường gặp tháng ${moment(endDate).month() + 1}`}</Typography>
       </Stack>
       <Stack spacing={2} justifyContent="center" alignItems="center">

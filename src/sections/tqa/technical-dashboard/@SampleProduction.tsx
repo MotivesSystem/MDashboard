@@ -215,6 +215,7 @@ export default function SampleProductionDashBoard({ startDate = "", endDate = ""
                             valueField: 'percent',
                         }}
                         showLegend
+                        customLegendLabel={false}
                         // customizeLabelText={customizeLabelTextCharDesign}
                         height={300}
                         width={300}

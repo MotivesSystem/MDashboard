@@ -216,6 +216,7 @@ export default function ThreeDDashBoard({ startDate = "", endDate = "", }: { sta
                             valueField: 'value',
                         }}
                         showLegend
+                        customLegendLabel={false}
                         // customizeLabelText={customizeLabelTextCharDesign}
                         height={300}
                         width={300}
