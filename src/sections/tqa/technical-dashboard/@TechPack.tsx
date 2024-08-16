@@ -55,7 +55,7 @@ export default function TechPack({ startDate = "", endDate = "", }: { startDate:
                 }, 0);
                 const assignedValue = items.find(i => i.label.toLowerCase() === "assigned")?.value
                 const percentValue = totalValue !== 0 ? (assignedValue / totalValue) * 100 : 0
-                
+
                 const newTechPack = {
                     total: totalValue,
                     percent: percentValue,
@@ -72,37 +72,11 @@ export default function TechPack({ startDate = "", endDate = "", }: { startDate:
         }
     }, [startDate, endDate,]);
 
-    const getDataTop5DesignBestWeek = useCallback(async () => {
-        try {
-            setLoadingTop5DesignBestWeek(true);
-            const postData = {
-                // "start_date": startDate,
-                "start_date": "2020/01/01",
-                "end_date": endDate,
-                "top_number": 5,
-                "employee_list_type": "BEST",
-                "module": "DESIGN_PLANNING"
-            };
-
-            const response = await axios.post(`${baseHosting}/api/dashboard/get-top-employees-design-planning-3d-process-by-week`, postData);
-
-            if (response && response.data.result === "success") {
-                setDataTop5DesignBestWeek(response.data.reply || []);
-            }
-            setLoadingTop5DesignBestWeek(false);
-        }
-        catch (error) {
-            console.error(error);
-            setLoadingTop5DesignBestWeek(false);
-        }
-    }, [startDate, endDate,]);
-
     const getDataTop5DesignBestYTD = useCallback(async () => {
         try {
             setLoadingTop5DesignBestYTD(true);
             const postData = {
                 "start_date": startDate,
-                // "start_date": "2020/01/01",
                 "end_date": endDate,
                 "top_number": 100,
                 "employee_list_type": "BEST",
@@ -124,69 +98,13 @@ export default function TechPack({ startDate = "", endDate = "", }: { startDate:
         }
     }, [startDate, endDate,]);
 
-    const getDataTop5DesignWorstWeek = useCallback(async () => {
-        try {
-            setLoadingTop5DesignWorstWeek(true);
-            const postData = {
-                // "start_date": startDate,
-                "start_date": "2020/01/01",
-                "end_date": endDate,
-                "top_number": 5,
-                "employee_list_type": "WORST",
-                "module": "DESIGN_PLANNING"
-            };
-
-            const response = await axios.post(`${baseHosting}/api/dashboard/get-top-employees-design-planning-3d-process-by-week`, postData);
-
-            if (response && response.data.result === "success") {
-                setDataTop5DesignWorstWeek(response.data.reply || []);
-            }
-            setLoadingTop5DesignWorstWeek(false);
-
-        }
-        catch (error) {
-            console.error(error);
-            setLoadingTop5DesignWorstWeek(false);
-
-        }
-    }, [startDate, endDate,]);
-
-    const getDataTop5DesignWorstYTD = useCallback(async () => {
-        try {
-            setLoadingTop5DesignWorstYTD(true);
-            const postData = {
-                // "start_date": startDate,
-                "start_date": "2020/01/01",
-                "end_date": endDate,
-                "top_number": 5,
-                "employee_list_type": "WORST",
-                "module": "DESIGN_PLANNING"
-            };
-
-            const response = await axios.post(`${baseHosting}/api/dashboard/get-top-employees-design-planning-3d-process-by-year`, postData);
-            if (response && response.data.result === "success") {
-                setDataTop5DesignWorstYTD(response.data.reply || []);
-            }
-            setLoadingTop5DesignWorstYTD(false);
-        }
-        catch (error) {
-            console.error(error);
-            setLoadingTop5DesignWorstYTD(false);
-        }
-    }, [startDate, endDate,]);
-
     useEffect(() => {
         getDataChartTechPack();
-        // getDataTop5DesignBestWeek();
         getDataTop5DesignBestYTD();
-        // getDataTop5DesignWorstWeek();
-        // getDataTop5DesignWorstYTD();
     }, [startDate, endDate,]);
-
 
     // custom fuctions
     const customizeLabelTextCharDesign = (arg) => {
-        // console.log(arg);
         return `${arg.argumentText} (${arg.valueText})`
     }
 
@@ -198,16 +116,14 @@ export default function TechPack({ startDate = "", endDate = "", }: { startDate:
                 <Stack direction={'row'} justifyContent={'space-between'} px={1}>
                     <Stack direction={'row'} justifyContent="center" spacing={2} alignContent={'center'} >
                         <Typography variant='h6'>Techpack</Typography>
-                        {/* <LinearProgressWithLabel value={dataDesign?.percent} width={200}/> */}
                     </Stack>
-                    <Stack direction={'row'} justifyContent="center" spacing={2} alignContent={'center'} >
-                        {/* <Typography variant='h6'>Techpack</Typography> */}
-                        <LinearProgressWithLabel value={dataChartTechPack?.percent} width={150} />
+                    <Stack direction={'row'} justifyContent="flex-end" spacing={2} alignContent={'center'} width={"100%"}>
+                        <LinearProgressWithLabel value={dataChartTechPack?.percent} height={'100%'} width={"75%"} />
                     </Stack>
 
                 </Stack>
 
-                <Box width={'100%'} justifyContent="center">
+                <Box width={'100%'} justifyContent="center" sx={{ marginTop: "45px !important" }}>
                     <TechPieChart
                         dataSource={dataChartTechPack?.data}
                         loading={loadingTechPackChart}
@@ -216,9 +132,8 @@ export default function TechPack({ startDate = "", endDate = "", }: { startDate:
                             valueField: 'value',
                         }}
                         showLegend
-                        // customizeLabelText={customizeLabelTextCharDesign}
-                        height={300}
-                        width={300}
+                        height={220}
+                        width={220}
                     />
                 </Box>
 
@@ -229,9 +144,7 @@ export default function TechPack({ startDate = "", endDate = "", }: { startDate:
 
                 <Stack spacing={1}>
                     <TopBestEmployees
-                        // loadingWeekly={loadingTop5DesignBestWeek}
                         loadingYearly={loadingTop5DesignBestYTD}
-                        // dataWeekly={dataTop5DesignBestWeek}
                         dataYearly={dataTop5DesignBestYTD}
                         endDate={endDate}
                         title="Employee List"

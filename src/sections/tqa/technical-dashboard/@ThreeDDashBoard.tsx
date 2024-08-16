@@ -41,12 +41,10 @@ export default function ThreeDDashBoard({ startDate = "", endDate = "", }: { sta
             const postData = {
                 "module": "PROCESS_3D",
                 "start_date": startDate,
-                // "start_date": "2020/01/01",
                 "end_date": endDate,
             };
 
             const response = await axios.post(`${baseHosting}/api/dashboard/get-pie-chart-data`, postData)
-            // console.log(response);
             if (response && response.data.result === "success") {
                 const newData = response.data.reply.items.map((val, i) => {
                     return { value: val.value, label: val.name, color: setColorSeries(val.name) }
@@ -57,7 +55,6 @@ export default function ThreeDDashBoard({ startDate = "", endDate = "", }: { sta
                     percent: response.data.reply.percentage,
                     data: newData
                 }
-
                 setDataDesign(newDataDesign);
             }
             setLoadingDesignChart(false);
@@ -68,50 +65,18 @@ export default function ThreeDDashBoard({ startDate = "", endDate = "", }: { sta
         }
     }, [startDate, endDate,]);
 
-
-
-
-    const getDataTop5DesignBestWeek = useCallback(async () => {
-        try {
-            setLoadingTop5DesignBestWeek(true);
-            const postData = {
-                // "start_date": startDate,
-                "start_date": "2020/01/01",
-                "end_date": endDate,
-                "top_number": 5,
-                "employee_list_type": "BEST",
-                "module": "PROCESS_3D",
-            };
-
-            const response = await axios.post(`${baseHosting}/api/dashboard/get-top-employees-design-planning-3d-process-by-week`, postData);
-
-            if (response && response.data.result === "success") {
-                setDataTop5DesignBestWeek(response.data.reply || []);
-            }
-            setLoadingTop5DesignBestWeek(false);
-        }
-        catch (error) {
-            console.error(error);
-            setLoadingTop5DesignBestWeek(false);
-        }
-    }, [startDate, endDate,]);
-
     const getDataTop5DesignBestYTD = useCallback(async () => {
         try {
             setLoadingTop5DesignBestYTD(true);
             const postData = {
-                // "start_date": startDate,
-                "start_date": "2024/07/01",
+                "start_date": startDate,
                 "end_date": endDate,
                 "top_number": 100,
                 "employee_list_type": "BEST",
                 "module": "PROCESS_3D",
                 "design_document": "EMPTY"
             };
-
-
             const response = await axios.post(`${baseHosting}/api/dashboard/get-top-employees-design-planning-3d-process-by-year`, postData);
-            console.log(response)
             if (response && response.data.result === "success") {
                 setDataTop5DesignBestYTD(response.data.reply || []);
             }
@@ -124,74 +89,15 @@ export default function ThreeDDashBoard({ startDate = "", endDate = "", }: { sta
         }
     }, [startDate, endDate,]);
 
-    const getDataTop5DesignWorstWeek = useCallback(async () => {
-        try {
-            setLoadingTop5DesignWorstWeek(true);
-            const postData = {
-                // "start_date": startDate,
-                "start_date": "2020/01/01",
-                "end_date": endDate,
-                "top_number": 5,
-                "employee_list_type": "WORST",
-                "module": "PROCESS_3D",
-            };
-
-            const response = await axios.post(`${baseHosting}/api/dashboard/get-top-employees-design-planning-3d-process-by-week`, postData);
-
-            if (response && response.data.result === "success") {
-                setDataTop5DesignWorstWeek(response.data.reply || []);
-            }
-            setLoadingTop5DesignWorstWeek(false);
-
-        }
-        catch (error) {
-            console.error(error);
-            setLoadingTop5DesignWorstWeek(false);
-
-        }
-    }, [startDate, endDate,]);
-
-    const getDataTop5DesignWorstYTD = useCallback(async () => {
-        try {
-            setLoadingTop5DesignWorstYTD(true);
-            const postData = {
-                // "start_date": startDate,
-                "start_date": "2020/01/01",
-                "end_date": endDate,
-                "top_number": 5,
-                "employee_list_type": "WORST",
-                "module": "PROCESS_3D",
-            };
-
-            const response = await axios.post(`${baseHosting}/api/dashboard/get-top-employees-design-planning-3d-process-by-year`, postData);
-            if (response && response.data.result === "success") {
-                setDataTop5DesignWorstYTD(response.data.reply || []);
-            }
-            setLoadingTop5DesignWorstYTD(false);
-        }
-        catch (error) {
-            console.error(error);
-            setLoadingTop5DesignWorstYTD(false);
-        }
-    }, [startDate, endDate,]);
-
     useEffect(() => {
         getDataChart();
-        // getDataTop5DesignBestWeek();
         getDataTop5DesignBestYTD();
-        // getDataTop5DesignWorstWeek();
-        // getDataTop5DesignWorstYTD();
     }, [startDate, endDate,]);
-
 
     // custom fuctions
     const customizeLabelTextCharDesign = (arg) => {
-        // console.log(arg);
         return `${arg.argumentText} (${arg.valueText})`
     }
-
-    // console.log(dataDesign, dataTop5DesignBestWeek, dataTop5DesignBestYTD, dataTop5DesignWorstWeek, dataTop5DesignWorstYTD);
-
 
     return (
         <Card
@@ -201,15 +107,13 @@ export default function ThreeDDashBoard({ startDate = "", endDate = "", }: { sta
                 <Stack direction={'row'} justifyContent={'space-between'} px={1}>
                     <Stack direction={'row'} justifyContent="center" spacing={3} alignContent={'center'}>
                         <Typography variant='h6'>3D</Typography>
-                        {/* <LinearProgressWithLabel value={dataDesign?.percent} /> */}
                     </Stack>
-                    <Stack direction={'row'} justifyContent="center" spacing={3} alignContent={'center'}>
-                        {/* <Typography variant='h6'>3D</Typography> */}
-                        <LinearProgressWithLabel value={dataDesign?.percent} width={150} />
+                    <Stack direction={'row'} justifyContent="flex-end" spacing={2} alignContent={'center'} width={"100%"}>
+                        <LinearProgressWithLabel value={dataDesign?.percent} height={'100%'} width={"75%"} />
                     </Stack>
                 </Stack>
 
-                <Box width={'100%'} justifyContent="center">
+                <Box width={'100%'} justifyContent="center" sx={{ marginTop: "45px !important" }}>
                     <TechPieChart
                         dataSource={dataDesign?.data}
                         loading={loadingDesignChart}
@@ -219,9 +123,8 @@ export default function ThreeDDashBoard({ startDate = "", endDate = "", }: { sta
                         }}
                         showLegend
                         customLegendLabel={false}
-                        // customizeLabelText={customizeLabelTextCharDesign}
-                        height={300}
-                        width={300}
+                        height={220}
+                        width={220}
                     />
                 </Box>
 
@@ -232,9 +135,7 @@ export default function ThreeDDashBoard({ startDate = "", endDate = "", }: { sta
 
                 <Stack spacing={1}>
                     <TopBestEmployees
-                        // loadingWeekly={loadingTop5DesignBestWeek}
                         loadingYearly={loadingTop5DesignBestYTD}
-                        // dataWeekly={dataTop5DesignBestWeek}
                         dataYearly={dataTop5DesignBestYTD}
                         endDate={endDate}
                         title="Employee List"

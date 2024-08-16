@@ -6,13 +6,15 @@ import PieChart, { Series, Label, Legend, LegendTitle, Font, Size, Export, Margi
 import { Chart, Series as BarChartSeries, Legend as BarCharLegend, Label as BarchartLabel, CommonSeriesSettings, Format, Size as BCSize, Title as BCTitile, Font as BCFont, ValueAxis } from 'devextreme-react/chart';
 // components
 import Iconify from "../../../components/Iconify";
+import useResponsive from '../../../hooks/useResponsive';
 
 // ----------------------------------------------------------------
 export default function MonthlyDefect({ startDate = "", endDate = "" }) {
 
   // hooks
   const theme = useTheme();
-
+  const mdUp = useResponsive('up', 'md');
+  const smUp = useResponsive('up', 'sm');
   // component states
   const [loadingInspection, setLoadingInspection] = useState(false);
   const [loadingCommonDefect, setLoadingCommonDefect] = useState(false);
@@ -24,7 +26,7 @@ export default function MonthlyDefect({ startDate = "", endDate = "" }) {
     try {
       setLoadingInspection(true);
       const postData = {
-        "now_date": '2024/07/31',
+        "now_date": moment(endDate).endOf('month').format('yyyy/MM/DD'),
         "top_number": 5,
       }
 
@@ -49,7 +51,7 @@ export default function MonthlyDefect({ startDate = "", endDate = "" }) {
     try {
       setLoadingCommonDefect(true);
       const postData = {
-        "now_date": '2024/07/16',
+        "now_date": moment(endDate).endOf('month').format('yyyy/MM/DD'),
         "top_number": 10,
       }
 
@@ -91,16 +93,15 @@ export default function MonthlyDefect({ startDate = "", endDate = "" }) {
       <Stack spacing={2} justifyContent="center" alignItems="center">
         {!loadingCommonDefect ?
           <Box width={'100%'} position={'relative'} sx={{
-            border: `1px solid ${theme.palette.divider}`
+            border: `1px solid ${theme.palette.divider}`,
+            justifyContent: "center",
+            display: "flex"
 
           }} borderRadius={1}>
             {inspectionDefect.length > 0 &&
               <PieChart
                 dataSource={inspectionDefect}
                 palette="Vintage"
-                // title={`Lỗi thường gặp tháng ${moment(endDate).month() + 1}`}
-                showZeroes
-                resolveLabelOverlapping="shift"
               >
                 <Series
                   argumentField="label"
@@ -108,12 +109,14 @@ export default function MonthlyDefect({ startDate = "", endDate = "" }) {
                   <Label
                     visible
                     position="inside"
-                    overlappingBehavior={"none"}
-                    // customizeText={customizeText}
                     radialOffset={30}
+                    backgroundColor={"transparent"}
+                    customizeText={(arg) => {
+                      const label = arg.value > 0 ? `${arg.valueText}%` : ""
+                      return label
+                    }}
                   >
                     <Font size={12} weight={600} />
-                    <Connector visible width={2} />
                   </Label>
                 </Series>
                 <Legend
@@ -123,13 +126,13 @@ export default function MonthlyDefect({ startDate = "", endDate = "" }) {
                   horizontalAlignment="center"
                   itemTextPosition="right"
                   rowCount={2}
+                  columnCount={2}
                   paddingLeftRight={0} paddingTopBottom={0}
                   margin={{ top: 5, left: 0, right: 0, bottom: 5 }}
-                // markerSize={10}
                 >
                   <Font size={12} />
                 </Legend>
-                <Size height={300} width={'100%'} />
+                <Size height={280} width={'100%'} />
                 <Export enabled={false} />
                 <Margin
                   top={2}
@@ -149,6 +152,8 @@ export default function MonthlyDefect({ startDate = "", endDate = "" }) {
             <Box width={'100%'} position={'relative'} sx={{
               border: `1px solid ${theme.palette.divider}`,
               overflow: 'hidden',
+              justifyContent: "center",
+              display: "flex"
             }} borderRadius={1}>
               <Chart id="chart" dataSource={monthlyCommonDefect}>
                 <CommonSeriesSettings
@@ -177,7 +182,7 @@ export default function MonthlyDefect({ startDate = "", endDate = "" }) {
                 </BCTitile>
                 <ValueAxis name="value" position="left" valueMarginsEnabled maxValueMargin={0.1} />
                 <BarCharLegend verticalAlignment="bottom" horizontalAlignment="center" visible={false} />
-                <BCSize width={'100%'} height={400} />
+                <BCSize width={"100%"} height={400} />
               </Chart>
             </Box>
             :

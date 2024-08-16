@@ -9,7 +9,6 @@ import { DASHBOARD_COLORS } from './index.tsx';
 function TechPieChart({ connectorVisible = true, radialOffset = 0, title = "", customLegendLabel = true, ...props }: IPieChartOptions & { dataSource: any, series: object, showLegend: boolean, customLegendLabel: boolean }) {
 
     const customizeTooltip = (arg) => {
-        console.log(`${arg.argumentText} (${arg.value})`)
         return `${arg.argumentText} (${arg.value})`
     }
 
@@ -50,7 +49,7 @@ function TechPieChart({ connectorVisible = true, radialOffset = 0, title = "", c
                         {...props?.series && props?.series}
                     >
                         <Label
-                            visible
+                            visible={false}
                             position=""
                             customizeText={props?.customizeLabelText}
                             radialOffset={radialOffset}
@@ -60,7 +59,7 @@ function TechPieChart({ connectorVisible = true, radialOffset = 0, title = "", c
                             <Font weight={'bold'} color={'black'} {...(props?.size && {
                                 size: props?.size
                             })} />
-                            <Connector visible={connectorVisible} width={2} />
+                            {/* <Connector visible={connectorVisible} width={2} /> */}
                         </Label>
                     </Series>
 
@@ -85,6 +84,8 @@ function TechPieChart({ connectorVisible = true, radialOffset = 0, title = "", c
                                         break;
                                 }
                             }
+                            const objLabel = props?.dataSource?.find(data => data.label === text.pointName);
+                            newLabel = objLabel ? `(${objLabel?.value}) ${newLabel}` : newLabel
                             return newLabel
                         }}
                         paddingLeftRight={0} paddingTopBottom={0}

@@ -107,12 +107,12 @@ const TQATechnicalDashboard = () => {
               handleChangeDate(newValue, 'startDate');
             }}
             height={40}
-            width={100}
+            width={140}
             showTodayButton
             hoverStateEnabled={false}
             activeStateEnabled={false}
             openOnFieldClick
-            showDropDownButton={false}
+            // showDropDownButton={false}
             showClearButton={false}
             acceptCustomValue={false}
             className='tqa-dropdown-date'

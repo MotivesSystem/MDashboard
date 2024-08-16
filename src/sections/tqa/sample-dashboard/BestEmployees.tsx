@@ -1,12 +1,13 @@
-import { Avatar, Box, Card, Stack, Typography, useTheme } from '@mui/material';
+import { Avatar, Box, Card, Stack, Typography, useTheme, Button, Pagination, Grid } from '@mui/material';
 import axios from 'axios';
 import { useEffect, useState } from 'react';
+import { ceil } from 'lodash';
 // components
 import Iconify from "../../../components/Iconify";
 import LinearProgressWithLabel from "./LinearProgressWithLabel.tsx";
 import SkeletonSampleStatistics from './SkeletonSampleStatistics.tsx';
 
-
+const topNumber = 24
 // ----------------------------------------------------------------
 export default function BestEmployees({ startDate = "", endDate = "" }) {
     // hooks
@@ -15,32 +16,31 @@ export default function BestEmployees({ startDate = "", endDate = "" }) {
     // component states
     const [loadingBestEmployeeData, setLoadingBestEmployeeData] = useState(false);
     const [loadingWorstData, setLoadingWorstData] = useState(false);
-    const [bestEmployeeWeekly, setBestEmployeeWeekly] = useState<any>([]);
-    const [worstEmployeeWeekly, setWorstEmployeeWeekly] = useState<any>([]);
-
+    const [firstHalfBestEmployeeWeekly, setFirstHalfBestEmployeeWeekly] = useState<any>([]);
+    const [sencondHalfBestEmployeeWeekly, setSencondHalfBestEmployeeWeekly] = useState<any>([]);
+    const [curPageNumber, setCurPageNumber] = useState(1);
+    const [totalItem, setTotalItem] = useState(0);
 
     const getbestEmployeeWeekly = async () => {
         try {
-            const topNumber = 24
             setLoadingBestEmployeeData(true)
             const postData = {
-                // "start_date": startDate,
-                "start_date": '2024/01/01',
+                "start_date": startDate,
                 "end_date": endDate,
                 "top_number": topNumber,
                 "employee_list_type": "BEST",
                 "is_show_year_value": 1,
+                "page_number": curPageNumber
             }
 
             const result = await axios.post(`https://test-dashboard-api.motivesfareast.com/api/dashboard/get-top-best-worst-sample-production-performance-by-week`, postData);
-
-            console.log(result.data);
 
             if (result.data.reply.length > 0) {
                 const firstHalf = result.data.reply.slice(0, topNumber / 2);
                 const secondHalf = result.data.reply.slice(topNumber / 2);
-                setBestEmployeeWeekly(firstHalf);
-                setWorstEmployeeWeekly(secondHalf);
+                setTotalItem(firstHalf[0]?.table_rows)
+                setFirstHalfBestEmployeeWeekly(firstHalf);
+                setSencondHalfBestEmployeeWeekly(secondHalf);
             }
             setLoadingBestEmployeeData(false)
         } catch (error) {
@@ -49,106 +49,115 @@ export default function BestEmployees({ startDate = "", endDate = "" }) {
         }
     };
 
-    const getWorstEmployeeWeekly = async () => {
-        try {
-            setLoadingWorstData(true);
-            const postData = {
-                // "start_date": startDate,
-                "start_date": '2024/01/01',
-                "end_date": endDate,
-                "top_number": 12,
-                "employee_list_type": "WORST",
-                "is_show_year_value": 1,
-            }
-
-            const result = await axios.post(`https://test-dashboard-api.motivesfareast.com/api/dashboard/get-top-best-worst-sample-production-performance-by-week`, postData);
-
-            console.log(result.data);
-
-            if (result.data.reply.length > 0) {
-                setWorstEmployeeWeekly(result.data.reply);
-            }
-            setLoadingWorstData(false);
-        } catch (error) {
-            console.error(error);
-            setLoadingWorstData(false);
-        }
-    };
-
+    const handleChangePage = (e, value) => {
+        setCurPageNumber(value)
+    }
 
     useEffect(() => {
         getbestEmployeeWeekly();
         // getWorstEmployeeWeekly();
-    }, [startDate, endDate])
+    }, [startDate, endDate, curPageNumber])
 
 
     return (
         <Card
             sx={{
                 p: 1,
-                pb: 3
+                pb: 3,
             }}
         >
-            <Stack spacing={2}>
-
-                <Stack justifyContent="flex-start" alignItems={"center"} p={1} direction='row' spacing={1}>
-                    <Iconify icon="solar:medal-ribbons-star-linear" sx={{ fontSize: 25, color: theme.palette.warning.main }} />
-                    <Typography variant='h5' fontWeight={'bold'}>{`Năng Suất Nhân Viên`}</Typography>
+            <Stack spacing={1}>
+                <Stack direction='row'>
+                    <Stack justifyContent="flex-start" p={1} direction='row' spacing={1} width={'100%'}>
+                        <Iconify icon="solar:medal-ribbons-star-linear" sx={{ fontSize: 25, color: theme.palette.warning.main }} />
+                        <Typography variant='h5' fontWeight={'bold'}>{`Năng Suất Nhân Viên`}</Typography>
+                    </Stack>
+                    <Stack justifyContent="flex-end" alignItems={"center"} p={1} direction='row' spacing={1}>
+                        <TimerButton changePageNumber={() => {
+                            if (curPageNumber >= ceil(totalItem / topNumber)) {
+                                setCurPageNumber(1)
+                            }
+                            else {
+                                setCurPageNumber(curPageNumber + 1)
+                            }
+                        }} />
+                    </Stack>
                 </Stack>
 
                 {
                     !loadingBestEmployeeData ?
-                        <Stack display={'grid'} gridTemplateColumns={'1fr 1fr 1fr 1fr'} columnGap={2} rowGap={3} justifyContent='center' alignItems='center' py={1} bgcolor="#E6F3FE" borderRadius={1}>
-                            {bestEmployeeWeekly.length > 0 &&
-                                bestEmployeeWeekly.map((item, index) => (
-                                    <Stack display={'flex'} direction={'row'} justifyContent='center' alignContent='center' spacing={1} key={item?.employee_id} height={'100%'} position={'relative'}>
-                                        <Stack display={'flex'} justifyContent={'center'} alignItems={'center'} height={'100%'} width={'30%'} spacing={1} >
-                                            <Avatar src={item?.avatar_url} sizes='lg' sx={{ width: 50, height: 50 }} />
-                                            <Typography variant='body2' textAlign='center' fontWeight='bold' maxWidth={75} sx={{ fontSize: 12, color: theme => theme.palette.success.dark }}>{item?.nick_name}</Typography>
-                                        </Stack>
+                        <Stack columnGap={2} rowGap={3} justifyContent='center' alignItems='center' py={1} bgcolor="#E6F3FE" borderRadius={1} minHeight={"33vh"}>
+                            <Grid container spacing={2}>
+                                {firstHalfBestEmployeeWeekly.length > 0 &&
+                                    firstHalfBestEmployeeWeekly.map((item, index) => (
+                                        <Grid item md={3} sm={6} key={index}>
+                                            <Stack display={'flex'} direction={'row'} justifyContent='center' alignContent='center' spacing={1} key={item?.employee_id} height={'100%'} position={'relative'}>
+                                                <Stack display={'flex'} justifyContent={'center'} alignItems={'center'} height={'100%'} width={'30%'} spacing={1} >
+                                                    <Avatar src={item?.avatar_url} sizes='lg' sx={{ width: 50, height: 50 }} />
+                                                    <Typography variant='body2' textAlign='center' fontWeight='bold' maxWidth={75} sx={{ fontSize: 12, color: theme => theme.palette.success.dark }}>{item?.nick_name}</Typography>
+                                                </Stack>
 
-                                        <Stack spacing={1} height={'100%'} width={'45%'} justifyContent='center'>
-                                            <LinearProgressWithLabel value={item?.year_performance_avg} name="Năm" />
-                                            <LinearProgressWithLabel value={item?.performance_avg} name="Tuần" />
-                                        </Stack>
+                                                <Stack spacing={1} height={'100%'} width={'45%'} justifyContent='center'>
+                                                    <Iconify icon={Number(item?.performance_avg) >= Number(item?.year_performance_avg) ? "fluent:arrow-trending-lines-20-filled" : "flowbite:chart-line-down-outline"} sx={{ fontSize: 35, color: theme => theme.palette[Number(item?.performance_avg) >= Number(item?.year_performance_avg) ? 'success' : 'error'].main }} />
+                                                    <LinearProgressWithLabel value={item?.year_performance_avg} name="Năm" />
+                                                    <LinearProgressWithLabel value={item?.performance_avg} name="Tuần" />
+                                                </Stack>
 
-                                        <Box height={'100%'} width={'25%'} display={'flex'} justifyContent='center' alignItems={'center'}>
-                                            <Iconify icon={Number(item?.performance_avg) >= Number(item?.year_performance_avg) ? "fluent:arrow-trending-lines-20-filled" : "flowbite:chart-line-down-outline"} sx={{ fontSize: 40, color: theme => theme.palette[Number(item?.performance_avg) >= Number(item?.year_performance_avg) ? 'success' : 'error'].main }} />
-                                        </Box>
-                                    </Stack>
-                                ))
-                            }
+                                            </Stack>
+                                        </Grid>
+                                    ))
+                                }
+                            </Grid>
                         </Stack>
                         :
                         <SkeletonSampleStatistics />
                 }
 
                 {
-                    !loadingWorstData ?
-                        <Stack display={'grid'} gridTemplateColumns={'1fr 1fr 1fr 1fr'} columnGap={2} rowGap={3} justifyContent='center' alignItems='center' py={1} bgcolor="#fbf2f6" borderRadius={1}>
-                            {worstEmployeeWeekly.length > 0 &&
-                                worstEmployeeWeekly.map((item, index) => (
-                                    <Stack display={'flex'} direction={'row'} justifyContent='center' alignContent='center' spacing={1} key={item?.employee_id} height={'100%'} position={'relative'}>
-                                        <Stack display={'flex'} justifyContent={'center'} alignItems={'center'} height={'100%'} width={'30%'} spacing={1} >
-                                            <Avatar src={item?.avatar_url} sizes='lg' sx={{ width: 50, height: 50 }} />
-                                            <Typography variant='body2' textAlign='center' fontWeight='bold' maxWidth={80} sx={{ fontSize: 12, color: theme => theme.palette.success.dark }}>{item?.nick_name}</Typography>
-                                        </Stack>
+                    !loadingBestEmployeeData ?
+                        <Stack columnGap={2} rowGap={3} justifyContent='center' alignItems='center' py={1} bgcolor="#fbf2f6" borderRadius={1} minHeight={"33vh"}>
+                            <Grid container spacing={2}>
+                                {sencondHalfBestEmployeeWeekly.length > 0 &&
+                                    sencondHalfBestEmployeeWeekly.map((item, index) => (
+                                        <Grid item md={3} sm={6} key={index}>
+                                            <Stack display={'flex'} direction={'row'} justifyContent='center' alignContent='center' spacing={1} key={item?.employee_id} height={'100%'} position={'relative'}>
+                                                <Stack display={'flex'} justifyContent={'center'} alignItems={'center'} height={'100%'} width={'30%'} spacing={1} >
+                                                    <Avatar src={item?.avatar_url} sizes='lg' sx={{ width: 50, height: 50 }} />
+                                                    <Typography variant='body2' textAlign='center' fontWeight='bold' maxWidth={80} sx={{ fontSize: 12, color: theme => theme.palette.success.dark }}>{item?.nick_name}</Typography>
+                                                </Stack>
 
-                                        <Stack spacing={1} height={'100%'} width={'45%'} justifyContent='center'>
-                                            <LinearProgressWithLabel value={item?.year_performance_avg} name="Năm" />
-                                            <LinearProgressWithLabel value={item?.performance_avg} name="Tuần" />
-                                        </Stack>
-
-                                        <Box height={'100%'} width={'25%'} display={'flex'} justifyContent='center' alignItems={'center'}>
-                                            <Iconify icon={Number(item?.performance_avg) >= Number(item?.year_performance_avg) ? "fluent:arrow-trending-lines-20-filled" : "flowbite:chart-line-down-outline"} sx={{ fontSize: 40, color: theme => theme.palette[Number(item?.performance_avg) >= Number(item?.year_performance_avg) ? 'success' : 'error'].main }} />
-                                        </Box>
-                                    </Stack>
-                                ))
-                            }
+                                                <Stack spacing={1} height={'100%'} width={'45%'} justifyContent='center'>
+                                                    <Iconify icon={Number(item?.performance_avg) >= Number(item?.year_performance_avg) ? "fluent:arrow-trending-lines-20-filled" : "flowbite:chart-line-down-outline"} sx={{ fontSize: 35, color: theme => theme.palette[Number(item?.performance_avg) >= Number(item?.year_performance_avg) ? 'success' : 'error'].main }} />
+                                                    <LinearProgressWithLabel value={item?.year_performance_avg} name="Năm" />
+                                                    <LinearProgressWithLabel value={item?.performance_avg} name="Tuần" />
+                                                </Stack>
+                                            </Stack>
+                                        </Grid>
+                                    ))
+                                }
+                            </Grid>
                         </Stack>
                         :
                         <SkeletonSampleStatistics />
                 }
+                <Stack direction='row'>
+                    <Stack justifyContent={'flex-start'} direction='row' alignItems={"center"} width={'100%'}>
+                        {/* <Pagination count={10} shape="rounded" /> */}
+                        <Button variant={"contained"}>All</Button>
+                        <Button>Sewing</Button>
+                        <Button>Cutting</Button>
+                        <Button>Ironing</Button>
+                    </Stack>
+                    <Stack justifyContent={'flex-end'} direction='row' alignItems={"center"} width={'100%'}>
+                        <Pagination
+                            count={ceil(totalItem / topNumber) || 0}
+                            shape="rounded"
+                            onChange={handleChangePage}
+                            page={curPageNumber}
+                        />
+                    </Stack>
+                </Stack>
+
             </Stack>
         </Card>
     )
@@ -159,31 +168,41 @@ export default function BestEmployees({ startDate = "", endDate = "" }) {
 
 
 // // ----------------------------------------------------------------
-// const SkeletonSampleStatistics = () => {
-//     return (
-//         <Stack display={'grid'} gridTemplateColumns={'1fr 1fr 1fr 1fr'} columnGap={2} rowGap={2} justifyContent='center' alignItems='center'>
-//             {
-//                 [...new Array(10)].map((_, index) => {
-//                     return (
-//                         <Stack key={index} display={'flex'} direction={'row'} justifyContent='center' alignContent='center' spacing={1}>
-//                             <Box display={'flex'} justifyContent={'center'} alignItems={'center'} height={'100%'}>
-//                                 <Skeleton variant='rounded' width={50} height={50} />
-//                             </Box>
+const TimerButton = ({ changePageNumber = () => { } }) => {
+    const [seconds, setSeconds] = useState(180); // Start with 180 seconds (3 minutes)
+    const [paused, setPaused] = useState(false);
 
-//                             <Stack spacing={1} height={'100%'}>
-//                                 <Skeleton variant='rectangular' height={10} width={60} sx={{ borderRadius: 1 }} />
-//                                 <Skeleton variant='rectangular' height={10} width={60} sx={{ borderRadius: 1 }} />
-//                             </Stack>
-//                             <Box height={'100%'}>
-//                                 <Skeleton variant='rectangular' height={50} width={50} />
-//                             </Box>
-//                         </Stack>
-//                     );
-//                 }
-//                 )
-//             }
-//         </Stack>
-//     )
-// }
+    useEffect(() => {
+        if (seconds === 0) {
+            setSeconds(180);
+            changePageNumber();
+        }
+        if (seconds > 0 && !paused) {
+            const interval = setInterval(() => {
+                setSeconds(prevSeconds => prevSeconds - 1);
+            }, 1000);
 
+            // Cleanup interval on component unmount
+            return () => clearInterval(interval);
+        }
+    }, [seconds, paused]);
+
+    const handlePauseTimer = () => {
+        setPaused(prevPaused => !prevPaused)
+    }
+
+    const formatTime = (secs) => {
+        const minutes = Math.floor(secs / 60);
+        const remainingSeconds = secs % 60;
+        return `${minutes}:${remainingSeconds < 10 ? '0' : ''}${remainingSeconds}`;
+    };
+    return (
+        <Button
+            variant={paused ? "contained" : "outlined"}
+            color={'success'}
+            onClick={handlePauseTimer}>
+            {`${formatTime(seconds)}`}
+        </Button>
+    )
+}
 

@@ -5,6 +5,8 @@ import { useCallback, useEffect, useState } from 'react';
 import { setColorSeries } from './index.tsx';
 import LinearProgressWithLabel from './ProgressBarWithLabel.tsx';
 import TechPieChart from './TechPieChart.tsx';
+// hooks
+import useResponsive from '../../../hooks/useResponsive';
 // utli
 import { fNumber } from '../../../utils/formatNumber';
 import TopBestEmployees from './TopBestEmployees.tsx';
@@ -20,7 +22,8 @@ export default function SampleProductionDashBoard({ startDate = "", endDate = ""
     const [loadingTop5DesignBestYTD, setLoadingTop5DesignBestYTD] = useState(false);
     const [loadingTop5DesignWorstWeek, setLoadingTop5DesignWorstWeek] = useState(false);
     const [loadingTop5DesignWorstYTD, setLoadingTop5DesignWorstYTD] = useState(false);
-
+    const mdUp = useResponsive('up', 'md');
+    const smUp = useResponsive('up', 'sm');
     // data source
     const [dataDesign, setDataDesign] = useState([]);
 
@@ -39,12 +42,10 @@ export default function SampleProductionDashBoard({ startDate = "", endDate = ""
             const postData = {
                 "module": "SAMPLE_PRODUCT_PLANNING",
                 "start_date": startDate,
-                // "start_date": "2020/01/01",
                 "end_date": endDate,
             };
 
             const response = await axios.post(`${baseHosting}/api/dashboard/get-pie-chart-data`, postData)
-            // console.log(response);
             if (response && response.data.result === "success") {
                 const newData = response.data.reply.items.map((val, i) => {
                     return { value: val.value, label: val.name, color: setColorSeries(val.name), percent: Math.round(val.value / response.data.reply.total_sum) * 100 }
@@ -66,47 +67,18 @@ export default function SampleProductionDashBoard({ startDate = "", endDate = ""
         }
     }, [startDate, endDate,]);
 
-
-
-
-    const getDataTop5DesignBestWeek = useCallback(async () => {
-        try {
-            setLoadingTop5DesignBestWeek(true);
-            const postData = {
-                // "start_date": startDate,
-                "start_date": "2020/01/01",
-                "end_date": endDate,
-                "top_number": 5,
-                "employee_list_type": "BEST",
-                "module": "SAMPLE_PRODUCT_PLANNING",
-            };
-
-            const response = await axios.post(`${baseHosting}/api/dashboard/get-top-best-worst-sample-production-performance-by-week`, postData);
-
-            if (response && response.data.result === "success") {
-                setDataTop5DesignBestWeek(response.data.reply || []);
-            }
-            setLoadingTop5DesignBestWeek(false);
-        }
-        catch (error) {
-            console.error(error);
-            setLoadingTop5DesignBestWeek(false);
-        }
-    }, [startDate, endDate,]);
-
     const getDataTop5DesignBestYTD = useCallback(async () => {
         try {
             setLoadingTop5DesignBestYTD(true);
             const postData = {
                 "start_date": startDate,
-                // "start_date": "2020/01/01",
                 "end_date": endDate,
                 "top_number": 100,
                 "employee_list_type": "BEST",
-                "module": "SAMPLE_PRODUCT_PLANNING",
-            };
-
-            const response = await axios.post(`${baseHosting}/api/dashboard/get-top-best-worst-sample-production-performance-by-year`, postData);
+                "is_show_year_value": 1,
+                "page_number": 1
+            }
+            const response = await axios.post(`${baseHosting}/api/dashboard/get-top-best-worst-sample-production-performance-by-week`, postData);
 
             if (response && response.data.result === "success") {
                 setDataTop5DesignBestYTD(response.data.reply || []);
@@ -120,74 +92,16 @@ export default function SampleProductionDashBoard({ startDate = "", endDate = ""
         }
     }, [startDate, endDate,]);
 
-    const getDataTop5DesignWorstWeek = useCallback(async () => {
-        try {
-            setLoadingTop5DesignWorstWeek(true);
-            const postData = {
-                // "start_date": startDate,
-                "start_date": "2020/01/01",
-                "end_date": endDate,
-                "top_number": 5,
-                "employee_list_type": "WORST",
-                "module": "SAMPLE_PRODUCT_PLANNING",
-            };
-
-            const response = await axios.post(`${baseHosting}/api/dashboard/get-top-best-worst-sample-production-performance-by-week`, postData);
-
-            if (response && response.data.result === "success") {
-                setDataTop5DesignWorstWeek(response.data.reply || []);
-            }
-            setLoadingTop5DesignWorstWeek(false);
-
-        }
-        catch (error) {
-            console.error(error);
-            setLoadingTop5DesignWorstWeek(false);
-
-        }
-    }, [startDate, endDate,]);
-
-    const getDataTop5DesignWorstYTD = useCallback(async () => {
-        try {
-            setLoadingTop5DesignWorstYTD(true);
-            const postData = {
-                "start_date": startDate,
-                // "start_date": "2020/01/01",
-                "end_date": endDate,
-                "top_number": 5,
-                "employee_list_type": "WORST",
-                "module": "SAMPLE_PRODUCT_PLANNING",
-            };
-
-            const response = await axios.post(`${baseHosting}/api/dashboard/get-top-best-worst-sample-production-performance-by-year`, postData);
-            if (response && response.data.result === "success") {
-                setDataTop5DesignWorstYTD(response.data.reply || []);
-            }
-            setLoadingTop5DesignWorstYTD(false);
-        }
-        catch (error) {
-            console.error(error);
-            setLoadingTop5DesignWorstYTD(false);
-        }
-    }, [startDate, endDate,]);
-
     useEffect(() => {
         getDataChart();
-        // getDataTop5DesignBestWeek();
         getDataTop5DesignBestYTD();
-        // getDataTop5DesignWorstWeek();
-        // getDataTop5DesignWorstYTD();
     }, [startDate, endDate,]);
-
 
     // custom fuctions
     const customizeLabelTextCharDesign = (arg) => {
         // console.log(arg);
         return `${arg.argumentText} (${arg.valueText}%)`
     }
-
-    // console.log(dataDesign, dataTop5DesignBestWeek, dataTop5DesignBestYTD, dataTop5DesignWorstWeek, dataTop5DesignWorstYTD);
-
 
     return (
         <Card
@@ -197,28 +111,25 @@ export default function SampleProductionDashBoard({ startDate = "", endDate = ""
                 <Stack direction={'row'} justifyContent={'space-between'} px={1}>
                     <Stack direction={'row'} justifyContent="center" spacing={3} alignContent={'center'}>
                         <Typography variant='h6'>Sample Production</Typography>
-                        {/* <LinearProgressWithLabel value={dataDesign?.percent} /> */}
                     </Stack>
 
-                    <Stack direction={'row'} justifyContent="center" spacing={3} alignContent={'center'}>
-                        {/* <Typography variant='h6'>Sample Production</Typography> */}
-                        <LinearProgressWithLabel value={dataDesign?.percent} width={150} />
+                    <Stack direction={'row'} justifyContent="flex-end" spacing={2} alignContent={'center'} width={"100%"}>
+                        <LinearProgressWithLabel value={dataDesign?.percent} height={'100%'} width={"75%"} />
                     </Stack>
                 </Stack>
 
-                <Box width={'100%'} justifyContent="center" sx={{ marginTop: "-13px !important" }}>
+                <Box width={'100%'} justifyContent="center">
                     <TechPieChart
                         dataSource={dataDesign?.data}
                         loading={loadingDesignChart}
                         series={{
                             argumentField: 'label',
-                            valueField: 'percent',
+                            valueField: 'value',
                         }}
                         showLegend
                         customLegendLabel={false}
-                        // customizeLabelText={customizeLabelTextCharDesign}
-                        height={300}
-                        width={300}
+                        height={220}
+                        width={mdUp ? 240 : 200}
                     />
                 </Box>
 
@@ -229,9 +140,7 @@ export default function SampleProductionDashBoard({ startDate = "", endDate = ""
 
                 <Stack spacing={1}>
                     <TopBestEmployees
-                        // loadingWeekly={loadingTop5DesignBestWeek}
                         loadingYearly={loadingTop5DesignBestYTD}
-                        // dataWeekly={dataTop5DesignBestWeek}
                         dataYearly={dataTop5DesignBestYTD}
                         endDate={endDate}
                         title="Employee List"
