@@ -24,6 +24,7 @@ import LoadingBackDrop from '../../components/BackDrop';
 import Image from "../../components/Image";
 import Page from '../../components/Page';
 import BestEmployees from '../../sections/tqa/sample-dashboard/BestEmployees.tsx';
+import ChartKPI from '../../sections/tqa/sample-dashboard/ChartKPI.tsx';
 import MonthlyDefect from '../../sections/tqa/sample-dashboard/MonthlyDefect.tsx';
 // utils
 import axios from '../../utils/axios';
@@ -192,6 +193,10 @@ function SampleStatistics() {
 
                 <Grid container p={1} spacing={2}>
                     <Grid item xs={12} md={8}>
+                        <ChartKPI
+                            startDate={stringStartDate}
+                            endDate={stringEndDate}
+                        />
                         <BestEmployees
                             startDate={stringStartDate}
                             endDate={stringEndDate}

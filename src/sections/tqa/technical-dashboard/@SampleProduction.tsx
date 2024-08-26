@@ -10,8 +10,10 @@ import useResponsive from '../../../hooks/useResponsive';
 // utli
 import { fNumber } from '../../../utils/formatNumber';
 import TopBestEmployees from './TopBestEmployees.tsx';
+// config
+import { HOST_API_DASHBOARD } from '../../../config';
 // ----------------------------------------------------------------
-const baseHosting = "https://test-dashboard-api.motivesfareast.com";
+const baseHosting = HOST_API_DASHBOARD;
 
 
 export default function SampleProductionDashBoard({ startDate = "", endDate = "", }: { startDate: string, endDate: string }) {

@@ -13,6 +13,7 @@ import PassedImg from './assets/images/passed.png';
 // ----------------------------------------------------------------------
 
 export const HOST_API = process.env.REACT_APP_HOST_API_KEY || '';
+export const HOST_API_DASHBOARD = process.env.REACT_APP_DASHBOARD_HOST_API_KEY || '';
 export const QC_ATTACHEMENTS_HOST_API = process.env.REACT_APP_HOST_ATTACHMENT;
 export const SERVER_HOST = process.env.REACT_APP_SERVER_HOST || '';
 export const HRM_HOST_API = process.env.REACT_APP_HRM_SERVER;

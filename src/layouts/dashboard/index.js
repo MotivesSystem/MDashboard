@@ -24,12 +24,12 @@ const MainStyle = styled('main', {
   flexGrow: 1,
   // paddingTop: HEADER.MOBILE_HEIGHT + 24,
   // paddingBottom: HEADER.MOBILE_HEIGHT + 24,
-  paddingTop: HEADER.MOBILE_HEIGHT + 5,
+  paddingTop: HEADER.MOBILE_HEIGHT - 10,
   // paddingBottom: HEADER.MOBILE_HEIGHT + 5,
   [theme.breakpoints.up('lg')]: {
     paddingLeft: 16,
     paddingRight: 16,
-    paddingTop: HEADER.DASHBOARD_DESKTOP_HEIGHT + 24,
+    // paddingTop: HEADER.DASHBOARD_DESKTOP_HEIGHT + 24,
     paddingBottom: HEADER.DASHBOARD_DESKTOP_HEIGHT + 24,
     width: `calc(100% - ${NAVBAR.DASHBOARD_WIDTH}px)`,
     transition: theme.transitions.create('margin-left', {
@@ -58,7 +58,7 @@ export default function DashboardLayout() {
   if (verticalLayout) {
     return (
       <>
-        <DashboardHeader onOpenSidebar={() => setOpen(true)} verticalLayout={verticalLayout} />
+        {/* <DashboardHeader onOpenSidebar={() => setOpen(true)} verticalLayout={verticalLayout} /> */}
         {isDesktop ? (
           <NavbarHorizontal />
         ) : (
@@ -93,7 +93,7 @@ export default function DashboardLayout() {
       }}
       id="app-page-contener"
     >
-      <DashboardHeader isCollapse={isCollapse} onOpenSidebar={() => setOpen(true)} />
+      {/* <DashboardHeader isCollapse={isCollapse} onOpenSidebar={() => setOpen(true)} /> */}
       <NavbarVertical isOpenSidebar={open} onCloseSidebar={() => setOpen(false)} />
       <MainStyle collapseClick={collapseClick}>
         <Outlet />

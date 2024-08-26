@@ -7,6 +7,7 @@ import { Chart, Series as BarChartSeries, Legend as BarCharLegend, Label as Barc
 // components
 import Iconify from "../../../components/Iconify";
 import useResponsive from '../../../hooks/useResponsive';
+import { HOST_API_DASHBOARD } from '../../../config'
 
 // ----------------------------------------------------------------
 export default function MonthlyDefect({ startDate = "", endDate = "" }) {
@@ -30,7 +31,7 @@ export default function MonthlyDefect({ startDate = "", endDate = "" }) {
         "top_number": 5,
       }
 
-      const result = await axios.post(`https://test-dashboard-api.motivesfareast.com/api/dashboard/get-top-quanlity-inspection-defect-pie-chart`, postData);
+      const result = await axios.post(`${HOST_API_DASHBOARD}/api/dashboard/get-top-quanlity-inspection-defect-pie-chart`, postData);
 
       // console.log(result.data);
 
@@ -55,7 +56,7 @@ export default function MonthlyDefect({ startDate = "", endDate = "" }) {
         "top_number": 10,
       }
 
-      const result = await axios.post(`https://test-dashboard-api.motivesfareast.com/api/dashboard/get-list-sample-production-defect-chart`, postData);
+      const result = await axios.post(`${HOST_API_DASHBOARD}/api/dashboard/get-list-sample-production-defect-chart`, postData);
 
       // console.log(result.data);
 
@@ -88,7 +89,7 @@ export default function MonthlyDefect({ startDate = "", endDate = "" }) {
     >
       <Stack justifyContent="flex-start" alignItems={"center"} p={1} direction='row' spacing={1}>
         {/* <Iconify icon="fluent-emoji-flat:warning" sx={{ fontSize: 25 }} /> */}
-        <Typography variant='h5' fontWeight={'bold'}>{`Lỗi thường gặp tháng ${moment(endDate).month() + 1}`}</Typography>
+        <Typography variant='h5' fontWeight={'bold'}>{`Thống kê lỗi tháng ${moment(endDate).month() + 1}`}</Typography>
       </Stack>
       <Stack spacing={2} justifyContent="center" alignItems="center">
         {!loadingCommonDefect ?
@@ -109,7 +110,7 @@ export default function MonthlyDefect({ startDate = "", endDate = "" }) {
                   <Label
                     visible
                     position="inside"
-                    radialOffset={30}
+                    radialOffset={20}
                     backgroundColor={"transparent"}
                     customizeText={(arg) => {
                       const label = arg.value > 0 ? `${arg.valueText}%` : ""
@@ -119,6 +120,12 @@ export default function MonthlyDefect({ startDate = "", endDate = "" }) {
                     <Font size={12} weight={600} />
                   </Label>
                 </Series>
+                <BCTitile
+                  text={`Tỉ lệ lỗi theo từng loại`}
+                  verticalAlignment='center'
+                >
+                  <BCFont weight={'bold'} size={18} />
+                </BCTitile>
                 <Legend
                   visible
                   orientation="horizontal"
@@ -126,7 +133,7 @@ export default function MonthlyDefect({ startDate = "", endDate = "" }) {
                   horizontalAlignment="center"
                   itemTextPosition="right"
                   rowCount={2}
-                  columnCount={2}
+                  columnCount={3}
                   paddingLeftRight={0} paddingTopBottom={0}
                   margin={{ top: 5, left: 0, right: 0, bottom: 5 }}
                 >
@@ -175,7 +182,7 @@ export default function MonthlyDefect({ startDate = "", endDate = "" }) {
                   color="#ff5757"
                 />
                 <BCTitile
-                  text={`% LỖI THÁNG ${moment(endDate).month() + 1}`}
+                  text={`Tỉ lệ lỗi theo nhóm`}
                   verticalAlignment='center'
                 >
                   <BCFont color={'#ff5757'} weight={'bold'} size={18} />

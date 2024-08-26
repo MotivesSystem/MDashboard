@@ -6,8 +6,9 @@ import { ceil } from 'lodash';
 import Iconify from "../../../components/Iconify";
 import LinearProgressWithLabel from "./LinearProgressWithLabel.tsx";
 import SkeletonSampleStatistics from './SkeletonSampleStatistics.tsx';
+import { HOST_API_DASHBOARD } from '../../../config'
 
-const topNumber = 24
+const topNumber = 12
 // ----------------------------------------------------------------
 export default function BestEmployees({ startDate = "", endDate = "" }) {
     // hooks
@@ -33,14 +34,14 @@ export default function BestEmployees({ startDate = "", endDate = "" }) {
                 "page_number": curPageNumber
             }
 
-            const result = await axios.post(`https://test-dashboard-api.motivesfareast.com/api/dashboard/get-top-best-worst-sample-production-performance-by-week`, postData);
+            const result = await axios.post(`${HOST_API_DASHBOARD}/api/dashboard/get-top-best-worst-sample-production-performance-by-week`, postData);
 
             if (result.data.reply.length > 0) {
-                const firstHalf = result.data.reply.slice(0, topNumber / 2);
-                const secondHalf = result.data.reply.slice(topNumber / 2);
-                setTotalItem(firstHalf[0]?.table_rows)
-                setFirstHalfBestEmployeeWeekly(firstHalf);
-                setSencondHalfBestEmployeeWeekly(secondHalf);
+                // const firstHalf = result.data.reply.slice(0, topNumber / 2);
+                // const secondHalf = result.data.reply.slice(topNumber / 2);
+                setTotalItem(result.data.reply[0]?.table_rows)
+                setFirstHalfBestEmployeeWeekly(result.data.reply);
+                // setSencondHalfBestEmployeeWeekly(secondHalf);
             }
             setLoadingBestEmployeeData(false)
         } catch (error) {
@@ -113,7 +114,7 @@ export default function BestEmployees({ startDate = "", endDate = "" }) {
                         <SkeletonSampleStatistics />
                 }
 
-                {
+                {/* {
                     !loadingBestEmployeeData ?
                         <Stack columnGap={2} rowGap={3} justifyContent='center' alignItems='center' py={1} bgcolor="#fbf2f6" borderRadius={1} minHeight={"33vh"}>
                             <Grid container spacing={2}>
@@ -139,15 +140,14 @@ export default function BestEmployees({ startDate = "", endDate = "" }) {
                         </Stack>
                         :
                         <SkeletonSampleStatistics />
-                }
+                } */}
                 <Stack direction='row'>
-                    <Stack justifyContent={'flex-start'} direction='row' alignItems={"center"} width={'100%'}>
-                        {/* <Pagination count={10} shape="rounded" /> */}
+                    {/* <Stack justifyContent={'flex-start'} direction='row' alignItems={"center"} width={'100%'}>
                         <Button variant={"contained"}>All</Button>
                         <Button>Sewing</Button>
                         <Button>Cutting</Button>
                         <Button>Ironing</Button>
-                    </Stack>
+                    </Stack> */}
                     <Stack justifyContent={'flex-end'} direction='row' alignItems={"center"} width={'100%'}>
                         <Pagination
                             count={ceil(totalItem / topNumber) || 0}
