@@ -36,6 +36,7 @@ import axios from '../../../utils/axios';
 import IconName from '../../../utils/iconsName';
 import uuidv4 from '../../../utils/uuidv4';
 import { HOST_API_DASHBOARD } from '../../../config'
+import SkeletonPieChart from '../technical-dashboard/SkeletonPieChart.tsx';
 
 const architectureSources = [
     { value: 'total_work_time', name: 'Số giờ làm trên tổng số người' },
@@ -45,7 +46,7 @@ const architectureSources = [
     { value: 'total_product_finish', name: 'Số lượng sản phẩm thực tế' },
 ];
 
-export default function ChartKPI({ startDate = "", endDate = "" }) {
+export default function ChartKPI({ startDate = "", endDate = "", isRefresh = false }) {
     const [dataChartKPI, setDataChartKPI] = useState()
     const [loadingChartKPIData, setLoadingChartKPIData] = useState(false)
 
@@ -77,7 +78,7 @@ export default function ChartKPI({ startDate = "", endDate = "" }) {
 
     useEffect(() => {
         getDataChartKPI();
-    }, [startDate, endDate])
+    }, [startDate, endDate,isRefresh])
 
 
     return (
@@ -92,7 +93,7 @@ export default function ChartKPI({ startDate = "", endDate = "" }) {
                 // display: "flex"
             }}
         >
-            <Chart
+            {!loadingChartKPIData ? (<Chart
                 palette="Violet"
                 dataSource={dataChartKPI}
             // title="Architecture Share Over Time (Count)"
@@ -126,7 +127,8 @@ export default function ChartKPI({ startDate = "", endDate = "" }) {
                 <Size height={350} width={'100%'} />
                 <Export enabled={false} />
                 <Tooltip enabled />
-            </Chart>
+            </Chart>) : <SkeletonPieChart />}
+
         </Box>
         //  </Card> 
     );

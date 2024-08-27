@@ -10,7 +10,7 @@ import useResponsive from '../../../hooks/useResponsive';
 import { HOST_API_DASHBOARD } from '../../../config'
 
 // ----------------------------------------------------------------
-export default function MonthlyDefect({ startDate = "", endDate = "" }) {
+export default function MonthlyDefect({ startDate = "", endDate = "", isRefresh = false }) {
 
   // hooks
   const theme = useTheme();
@@ -37,7 +37,10 @@ export default function MonthlyDefect({ startDate = "", endDate = "" }) {
 
       if (result.data.reply.length > 0) {
         setInspectionDefect(result.data.reply.map(d => ({ ...d, label: d.name })));
-      };
+      }
+      else {
+        setInspectionDefect([])
+      }
 
       setLoadingInspection(false);
 
@@ -62,7 +65,9 @@ export default function MonthlyDefect({ startDate = "", endDate = "" }) {
 
       if (result.data.reply.length > 0) {
         setMonthlyCommonDefect(result.data.reply.map(d => ({ ...d, label: d.name })));
-      };
+      } else {
+        setMonthlyCommonDefect([])
+      }
 
       setLoadingCommonDefect(false);
 
@@ -75,7 +80,7 @@ export default function MonthlyDefect({ startDate = "", endDate = "" }) {
   useEffect(() => {
     getInspectionDefects();
     getMonthCommonDefects();
-  }, [startDate, endDate])
+  }, [startDate, endDate, isRefresh])
 
   const customizeText = (arg) => {
     return `${arg?.argumentText} (${arg?.percentText})`
@@ -124,7 +129,7 @@ export default function MonthlyDefect({ startDate = "", endDate = "" }) {
                   text={`Tỉ lệ lỗi theo từng loại`}
                   verticalAlignment='center'
                 >
-                  <BCFont weight={'bold'} size={18} />
+                  <BCFont weight={'bold'} size={16} />
                 </BCTitile>
                 <Legend
                   visible
@@ -132,12 +137,12 @@ export default function MonthlyDefect({ startDate = "", endDate = "" }) {
                   verticalAlignment="bottom"
                   horizontalAlignment="center"
                   itemTextPosition="right"
-                  rowCount={2}
-                  columnCount={3}
+                  rowCount={5}
+                  columnCount={2}
                   paddingLeftRight={0} paddingTopBottom={0}
                   margin={{ top: 5, left: 0, right: 0, bottom: 5 }}
                 >
-                  <Font size={12} />
+                  <Font size={10} />
                 </Legend>
                 <Size height={280} width={'100%'} />
                 <Export enabled={false} />

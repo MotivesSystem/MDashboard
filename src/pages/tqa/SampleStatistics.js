@@ -38,7 +38,7 @@ import { DASHBOARD_COLORS } from '../../sections/tqa/technical-dashboard/index.t
 
 
 // 'isoWeek'
-const firstDayOfWeek = moment().startOf('isoWeek').format('MMMM DD, YYYY');
+const firstDayOfWeek = moment().startOf('isoMonth').format('MMMM DD, YYYY');
 
 
 
@@ -51,10 +51,17 @@ function SampleStatistics() {
     // components states;
     const [startDate, setStartDate] = useState(firstDayOfWeek);
     const [endDate, setEndDate] = useState(new Date());
+    const [isRefresh, setIsRefresh] = useState(false);
     const [submitedDate, setSubmitedDate] = useState({
         startDate: firstDayOfWeek,
         endDate: new Date(),
     });
+
+    useEffect(() => {
+        if (isRefresh) {
+            setIsRefresh(false);
+        }
+    }, [isRefresh])
 
     // Custom functions;
     const handleChangeDate = (e, type) => {
@@ -97,7 +104,7 @@ function SampleStatistics() {
 
                     <Iconify icon={"ic:baseline-info"} sx={{ fontSize: 20, color: DASHBOARD_COLORS.text.title, ml: 1 }} />:
 
-                    <DateBox
+                    {/* <DateBox
                         type="date"
                         displayFormat={"dd/MM/yyyy"}
                         label="Month"
@@ -127,11 +134,16 @@ function SampleStatistics() {
                         className='tqa-dropdown-date'
                     />
 
-                    <Typography className='tqa-dropdown-datebox'>~</Typography>
+                    <Typography className='tqa-dropdown-datebox'>~</Typography> */}
 
                     <DateBox
                         type="date"
-                        displayFormat={"dd/MM/yyyy"}
+                        // displayFormat={"dd/MM/yyyy"}
+                        displayFormat={"monthAndYear"}
+                        calendarOptions={{
+                            maxZoomLevel: 'year',
+                            minZoomLevel: 'century',
+                        }}
                         label="Month"
                         labelMode="hidden"
                         style={{
@@ -144,15 +156,18 @@ function SampleStatistics() {
                         }}
                         value={endDate}
                         onValueChange={(newValue) => {
-                            handleChangeDate(newValue, 'endDate');
+                            const firstDateOfMonth = new Date(newValue.getFullYear(), newValue.getMonth(), 1)
+                            const lastDateOfMonth = new Date(newValue.getFullYear(), newValue.getMonth() + 1, 0)
+                            handleChangeDate(firstDateOfMonth, 'startDate');
+                            handleChangeDate(lastDateOfMonth, 'endDate');
                         }}
                         height={40}
-                        width={140}
+                        width={160}
                         showTodayButton
                         hoverStateEnabled={false}
                         activeStateEnabled={false}
                         openOnFieldClick
-                        disabledDates={(data) => disableDates(data)}
+                        // disabledDates={(data) => disableDates(data)}
                         acceptCustomValue={false}
                         className='tqa-dropdown-date'
                     />
@@ -196,10 +211,12 @@ function SampleStatistics() {
                         <ChartKPI
                             startDate={stringStartDate}
                             endDate={stringEndDate}
+                            isRefresh={isRefresh}
                         />
                         <BestEmployees
                             startDate={stringStartDate}
                             endDate={stringEndDate}
+                            setIsRefresh={setIsRefresh}
                         />
                     </Grid>
 
@@ -207,6 +224,7 @@ function SampleStatistics() {
                         <MonthlyDefect
                             startDate={stringStartDate}
                             endDate={stringEndDate}
+                            isRefresh={isRefresh}
                         />
                     </Grid>
                 </Grid>

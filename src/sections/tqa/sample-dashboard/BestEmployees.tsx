@@ -10,7 +10,7 @@ import { HOST_API_DASHBOARD } from '../../../config'
 
 const topNumber = 12
 // ----------------------------------------------------------------
-export default function BestEmployees({ startDate = "", endDate = "" }) {
+export default function BestEmployees({ startDate = "", endDate = "", setIsRefresh = () => { } }) {
     // hooks
     const theme = useTheme();
 
@@ -42,6 +42,10 @@ export default function BestEmployees({ startDate = "", endDate = "" }) {
                 setTotalItem(result.data.reply[0]?.table_rows)
                 setFirstHalfBestEmployeeWeekly(result.data.reply);
                 // setSencondHalfBestEmployeeWeekly(secondHalf);
+            }
+            else {
+                setTotalItem(0)
+                setFirstHalfBestEmployeeWeekly([]);
             }
             setLoadingBestEmployeeData(false)
         } catch (error) {
@@ -77,9 +81,11 @@ export default function BestEmployees({ startDate = "", endDate = "" }) {
                         <TimerButton changePageNumber={() => {
                             if (curPageNumber >= ceil(totalItem / topNumber)) {
                                 setCurPageNumber(1)
+                                setIsRefresh(true);
                             }
                             else {
                                 setCurPageNumber(curPageNumber + 1)
+                                setIsRefresh(true);
                             }
                         }} />
                     </Stack>
@@ -114,33 +120,6 @@ export default function BestEmployees({ startDate = "", endDate = "" }) {
                         <SkeletonSampleStatistics />
                 }
 
-                {/* {
-                    !loadingBestEmployeeData ?
-                        <Stack columnGap={2} rowGap={3} justifyContent='center' alignItems='center' py={1} bgcolor="#fbf2f6" borderRadius={1} minHeight={"33vh"}>
-                            <Grid container spacing={2}>
-                                {sencondHalfBestEmployeeWeekly.length > 0 &&
-                                    sencondHalfBestEmployeeWeekly.map((item, index) => (
-                                        <Grid item md={3} sm={6} key={index}>
-                                            <Stack display={'flex'} direction={'row'} justifyContent='center' alignContent='center' spacing={1} key={item?.employee_id} height={'100%'} position={'relative'}>
-                                                <Stack display={'flex'} justifyContent={'center'} alignItems={'center'} height={'100%'} width={'30%'} spacing={1} >
-                                                    <Avatar src={item?.avatar_url} sizes='lg' sx={{ width: 50, height: 50 }} />
-                                                    <Typography variant='body2' textAlign='center' fontWeight='bold' maxWidth={80} sx={{ fontSize: 12, color: theme => theme.palette.success.dark }}>{item?.nick_name}</Typography>
-                                                </Stack>
-
-                                                <Stack spacing={1} height={'100%'} width={'45%'} justifyContent='center'>
-                                                    <Iconify icon={Number(item?.performance_avg) >= Number(item?.year_performance_avg) ? "fluent:arrow-trending-lines-20-filled" : "flowbite:chart-line-down-outline"} sx={{ fontSize: 35, color: theme => theme.palette[Number(item?.performance_avg) >= Number(item?.year_performance_avg) ? 'success' : 'error'].main }} />
-                                                    <LinearProgressWithLabel value={item?.year_performance_avg} name="Năm" />
-                                                    <LinearProgressWithLabel value={item?.performance_avg} name="Tuần" />
-                                                </Stack>
-                                            </Stack>
-                                        </Grid>
-                                    ))
-                                }
-                            </Grid>
-                        </Stack>
-                        :
-                        <SkeletonSampleStatistics />
-                } */}
                 <Stack direction='row'>
                     {/* <Stack justifyContent={'flex-start'} direction='row' alignItems={"center"} width={'100%'}>
                         <Button variant={"contained"}>All</Button>
