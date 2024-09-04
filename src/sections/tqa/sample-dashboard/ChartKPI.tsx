@@ -29,6 +29,7 @@ import {
     Label,
     Format,
     Grid,
+    Point,
     Size
 } from 'devextreme-react/chart';
 // utils
@@ -62,7 +63,8 @@ export default function ChartKPI({ startDate = "", endDate = "", isRefresh = fal
                 const dataKPI = result.data.reply.map((data) => {
                     return {
                         ...data,
-                        "date_value": moment(data.date_value).format('yyyy/MM/DD')
+                        // "date_value": moment(data.date_value).format('yyyy/MM/DD')
+                        "date_value": moment(data.date_value).date()
                     }
                 })
                 setDataChartKPI(dataKPI)
@@ -78,7 +80,7 @@ export default function ChartKPI({ startDate = "", endDate = "", isRefresh = fal
 
     useEffect(() => {
         getDataChartKPI();
-    }, [startDate, endDate,isRefresh])
+    }, [startDate, endDate, isRefresh])
 
 
     return (
@@ -101,7 +103,9 @@ export default function ChartKPI({ startDate = "", endDate = "", isRefresh = fal
                 <CommonSeriesSettings
                     argumentField="date_value"
                     type={"spline"}
-                />
+                >
+                    <Point visible size={6} />
+                </CommonSeriesSettings>
                 <CommonAxisSettings>
                     <Grid visible />
                 </CommonAxisSettings>
@@ -116,7 +120,9 @@ export default function ChartKPI({ startDate = "", endDate = "", isRefresh = fal
                     allowDecimals={false}
                     axisDivisionFactor={60}
                 >
-                    <Label>
+                    <Label  
+                        wordWrap="none"
+                        overlappingBehavior="stagger">
                         <Format type="decimal" />
                     </Label>
                 </ArgumentAxis>

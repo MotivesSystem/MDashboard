@@ -117,16 +117,16 @@ export default function MonthlyDefect({ startDate = "", endDate = "", isRefresh 
                     position="inside"
                     radialOffset={20}
                     backgroundColor={"transparent"}
-                    customizeText={(arg) => {
-                      const label = arg.value > 0 ? `${arg.valueText}%` : ""
-                      return label
-                    }}
+                    // customizeText={(arg) => {
+                    //   const label = arg.value > 0 ? `${arg.valueText}%` : ""
+                    //   return label
+                    // }}
                   >
                     <Font size={12} weight={600} />
                   </Label>
                 </Series>
                 <BCTitile
-                  text={`Tỉ lệ lỗi theo từng loại`}
+                  text={`Tỉ lệ lỗi theo từng loại (%)`}
                   verticalAlignment='center'
                 >
                   <BCFont weight={'bold'} size={16} />

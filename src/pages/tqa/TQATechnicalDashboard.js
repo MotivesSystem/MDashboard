@@ -36,7 +36,7 @@ interface IQueryDate {
   startDate: dateType;
   endDate: dateType;
 }
-const firstDayOfWeek = moment().startOf('isoWeek').format('MMMM DD, YYYY');
+const firstDayOfWeek = moment().startOf('month').format('MMMM DD, YYYY');
 
 // ----------------------------------------------------------------
 const TQATechnicalDashboard = () => {
@@ -88,7 +88,7 @@ const TQATechnicalDashboard = () => {
 
           <Iconify icon={"ic:baseline-info"} sx={{ fontSize: 20, color: DASHBOARD_COLORS.text.title, ml: 1 }} />:
 
-          <DateBox
+          {/* <DateBox
             type="date"
             displayFormat={"dd/MM/yyyy"}
             label="Month"
@@ -118,11 +118,15 @@ const TQATechnicalDashboard = () => {
             className='tqa-dropdown-date'
           />
 
-          <Typography className='tqa-dropdown-datebox'>~</Typography>
+          <Typography className='tqa-dropdown-datebox'>~</Typography> */}
 
           <DateBox
             type="date"
-            displayFormat={"dd/MM/yyyy"}
+            displayFormat={"monthAndYear"}
+            calendarOptions={{
+              maxZoomLevel: 'year',
+              minZoomLevel: 'century',
+          }}
             label="Month"
             labelMode="hidden"
             style={{
@@ -135,15 +139,19 @@ const TQATechnicalDashboard = () => {
             }}
             value={endDate}
             onValueChange={(newValue) => {
-              handleChangeDate(newValue, 'endDate');
+              const firstDateOfMonth = new Date(newValue.getFullYear(), newValue.getMonth(), 1)
+              const lastDateOfMonth = new Date(newValue.getFullYear(), newValue.getMonth() + 1, 0)
+              handleChangeDate(firstDateOfMonth, 'startDate');
+              handleChangeDate(lastDateOfMonth, 'endDate');
+              // handleChangeDate(newValue, 'endDate');
             }}
             height={40}
-            width={140}
+            width={160}
             showTodayButton
             hoverStateEnabled={false}
             activeStateEnabled={false}
             openOnFieldClick
-            disabledDates={(data) => disableDates(data)}
+            // disabledDates={(data) => disableDates(data)}
             acceptCustomValue={false}
             className='tqa-dropdown-date'
           />
