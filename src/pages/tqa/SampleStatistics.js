@@ -26,6 +26,7 @@ import Page from '../../components/Page';
 import BestEmployees from '../../sections/tqa/sample-dashboard/BestEmployees.tsx';
 import ChartKPI from '../../sections/tqa/sample-dashboard/ChartKPI.tsx';
 import MonthlyDefect from '../../sections/tqa/sample-dashboard/MonthlyDefect.tsx';
+import MLearningPopup from '../../sections/tqa/sample-dashboard/MLearningPopup.tsx';
 // utils
 import axios from '../../utils/axios';
 import IconName from '../../utils/iconsName';
@@ -56,6 +57,7 @@ function SampleStatistics() {
         startDate: firstDayOfWeek,
         endDate: new Date(),
     });
+    const [modalContent, setModalContent] = useState({ visible: false })
 
     useEffect(() => {
         if (isRefresh) {
@@ -78,6 +80,14 @@ function SampleStatistics() {
             console.error(error);
         }
     };
+
+    const handleOpenModal = () => {
+        setModalContent({ visible: true })
+    }
+
+    const handleCloseModal = () => {
+        setModalContent({ visible: false })
+    }
 
     const disableDates = (args) => {
         return moment(args.date).diff(startDate, 'days') < 0;
@@ -176,26 +186,26 @@ function SampleStatistics() {
 
                 <Stack direction={'row'} width={'33%'} spacing={2} justifyContent={'space-evenly'} alignItems={'center'}>
                     <Stack justifyContent={'center'} alignItems={'center'} display={'flex'} >
-                        <IconButton>
+                        <IconButton onClick={handleOpenModal}> 
                             <Iconify icon="carbon:video" />
                         </IconButton>
                         <Typography variant='body2'>Video</Typography>
                     </Stack>
                     <Stack justifyContent={'center'} alignItems={'center'} display={'flex'}>
-                        <IconButton>
+                        <IconButton onClick={handleOpenModal}>
                             <Iconify icon="iconoir:privacy-policy" />
                         </IconButton>
                         <Typography variant='body2'>Policy</Typography>
                     </Stack>
 
                     <Stack justifyContent={'center'} alignItems={'center'} display={'flex'}>
-                        <IconButton>
+                        <IconButton onClick={handleOpenModal}>
                             <Iconify icon="material-symbols:fact-check-outline" />
                         </IconButton>
                         <Typography variant='body2'>Standard</Typography>
                     </Stack>
                     <Stack justifyContent={'center'} alignItems={'center'} display={'flex'}>
-                        <IconButton>
+                        <IconButton onClick={handleOpenModal}>
                             <Iconify icon="fluent:document-one-page-sparkle-20-regular" />
                         </IconButton>
                         <Typography variant='body2'>Guidline</Typography>
@@ -229,7 +239,7 @@ function SampleStatistics() {
                     </Grid>
                 </Grid>
             </Box>
-
+            <MLearningPopup modalContent={modalContent} onClose={handleCloseModal} />
         </Page>
     )
 }

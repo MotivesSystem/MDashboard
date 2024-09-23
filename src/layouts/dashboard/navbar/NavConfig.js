@@ -42,7 +42,7 @@ const navConfig = [
   // ----------------------------------------------------------------------
   {
     items: [
-      { title: 'home', path: PATH_APP.general.app, icon: ICONS.dashboard, id: 'home' },
+      // { title: 'home', path: PATH_APP.general.app, icon: ICONS.dashboard, id: 'home' },
       // {
       //   title: 'calendar',
       //   path: PATH_APP.calendar.activity,

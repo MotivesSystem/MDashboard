@@ -42,7 +42,7 @@ import SkeletonPieChart from '../technical-dashboard/SkeletonPieChart.tsx';
 const architectureSources = [
     { value: 'total_work_time', name: 'Số giờ làm trên tổng số người' },
     { value: 'total_actual_work_time', name: 'Số giờ làm thực tế bao gồm OT' },
-    { value: 'total_work_time_planning', name: 'Số giờ làm theo plan' },
+    // { value: 'total_work_time_planning', name: 'Số giờ làm theo plan' },
     { value: 'total_product_planning', name: 'Số lượng sản phẩm theo plan' },
     { value: 'total_product_finish', name: 'Số lượng sản phẩm thực tế' },
 ];
@@ -117,12 +117,12 @@ export default function ChartKPI({ startDate = "", endDate = "", isRefresh = fal
                 }
                 <Margin bottom={20} />
                 <ArgumentAxis
-                    allowDecimals={false}
-                    axisDivisionFactor={60}
+                allowDecimals={false}
+                axisDivisionFactor={1}
                 >
-                    <Label  
+                    <Label
                         wordWrap="none"
-                        overlappingBehavior="stagger">
+                        overlappingBehavior="rotate">
                         <Format type="decimal" />
                     </Label>
                 </ArgumentAxis>
