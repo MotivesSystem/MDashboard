@@ -37,6 +37,7 @@ interface IQueryDate {
   endDate: dateType;
 }
 const firstDayOfWeek = moment().startOf('month').format('MMMM DD, YYYY');
+const endOfMonth   = moment().endOf('month').format('MMMM DD, YYYY');
 
 // ----------------------------------------------------------------
 const TQATechnicalDashboard = () => {
@@ -45,10 +46,10 @@ const TQATechnicalDashboard = () => {
 
   // components states;
   const [startDate, setStartDate] = useState(firstDayOfWeek);
-  const [endDate, setEndDate] = useState(new Date());
+  const [endDate, setEndDate] = useState(new Date(endOfMonth));
   const [submitedDate, setSubmitedDate] = useState({
     startDate: firstDayOfWeek,
-    endDate: new Date(),
+    endDate: new Date(endOfMonth),
   });
 
   // Custom functions;

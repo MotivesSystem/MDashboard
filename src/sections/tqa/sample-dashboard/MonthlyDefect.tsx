@@ -90,7 +90,7 @@ export default function MonthlyDefect({ startDate = "", endDate = "", isRefresh 
 
   return (
     <Card
-      sx={{ p: 1, pb: 3 }}
+      sx={{ p: 1, pb: 5 }}
     >
       <Stack justifyContent="flex-start" alignItems={"center"} p={1} direction='row' spacing={1}>
         {/* <Iconify icon="fluent-emoji-flat:warning" sx={{ fontSize: 25 }} /> */}
@@ -115,7 +115,7 @@ export default function MonthlyDefect({ startDate = "", endDate = "", isRefresh 
                   <Label
                     visible
                     position="inside"
-                    radialOffset={20}
+                    radialOffset={30}
                     backgroundColor={"transparent"}
                     // customizeText={(arg) => {
                     //   const label = arg.value > 0 ? `${arg.valueText}%` : ""
@@ -144,7 +144,7 @@ export default function MonthlyDefect({ startDate = "", endDate = "", isRefresh 
                 >
                   <Font size={10} />
                 </Legend>
-                <Size height={280} width={'100%'} />
+                <Size height={350} width={'100%'} />
                 <Export enabled={false} />
                 <Margin
                   top={2}

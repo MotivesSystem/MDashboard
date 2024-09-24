@@ -39,8 +39,8 @@ import { DASHBOARD_COLORS } from '../../sections/tqa/technical-dashboard/index.t
 
 
 // 'isoWeek'
-const firstDayOfWeek = moment().startOf('isoMonth').format('MMMM DD, YYYY');
-
+const firstDayOfWeek = moment().startOf('month').format('MMMM DD, YYYY');
+const endOfMonth   = moment().endOf('month').format('MMMM DD, YYYY');
 
 
 // ----------------------------------------------------------------
@@ -51,11 +51,11 @@ function SampleStatistics() {
 
     // components states;
     const [startDate, setStartDate] = useState(firstDayOfWeek);
-    const [endDate, setEndDate] = useState(new Date());
+    const [endDate, setEndDate] = useState(new Date(endOfMonth));
     const [isRefresh, setIsRefresh] = useState(false);
     const [submitedDate, setSubmitedDate] = useState({
         startDate: firstDayOfWeek,
-        endDate: new Date(),
+        endDate: new Date(endOfMonth),
     });
     const [modalContent, setModalContent] = useState({ visible: false })
 
@@ -95,7 +95,7 @@ function SampleStatistics() {
 
     const stringStartDate = moment(startDate).format('yyyy/MM/DD');
     const stringEndDate = moment(endDate).format('yyyy/MM/DD');
-
+    console.log(stringEndDate)
 
     return (
         <Page title="TQA - Sample Room">

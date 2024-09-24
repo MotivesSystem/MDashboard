@@ -130,7 +130,7 @@ export default function ChartKPI({ startDate = "", endDate = "", isRefresh = fal
                     verticalAlignment="top"
                     horizontalAlignment="right"
                 />
-                <Size height={350} width={'100%'} />
+                <Size height={420} width={'100%'} />
                 <Export enabled={false} />
                 <Tooltip enabled />
             </Chart>) : <SkeletonPieChart />}

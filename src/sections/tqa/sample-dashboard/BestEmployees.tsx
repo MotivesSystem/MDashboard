@@ -68,7 +68,7 @@ export default function BestEmployees({ startDate = "", endDate = "", setIsRefre
         <Card
             sx={{
                 p: 1,
-                pb: 3,
+                pb: 1,
             }}
         >
             <Stack spacing={1}>

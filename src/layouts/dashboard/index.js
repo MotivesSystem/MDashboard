@@ -24,7 +24,7 @@ const MainStyle = styled('main', {
   flexGrow: 1,
   // paddingTop: HEADER.MOBILE_HEIGHT + 24,
   // paddingBottom: HEADER.MOBILE_HEIGHT + 24,
-  paddingTop: HEADER.MOBILE_HEIGHT - 10,
+  // paddingTop: HEADER.MOBILE_HEIGHT - 10,
   // paddingBottom: HEADER.MOBILE_HEIGHT + 5,
   [theme.breakpoints.up('lg')]: {
     paddingLeft: 16,
