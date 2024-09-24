@@ -221,7 +221,7 @@ function SampleStatistics() {
                         <ChartKPI
                             startDate={stringStartDate}
                             endDate={stringEndDate}
-                            isRefresh={isRefresh}
+                        // isRefresh={isRefresh}
                         />
                         <BestEmployees
                             startDate={stringStartDate}
@@ -234,7 +234,7 @@ function SampleStatistics() {
                         <MonthlyDefect
                             startDate={stringStartDate}
                             endDate={stringEndDate}
-                            isRefresh={isRefresh}
+                        // isRefresh={isRefresh}
                         />
                     </Grid>
                 </Grid>

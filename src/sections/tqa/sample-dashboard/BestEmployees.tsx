@@ -148,12 +148,12 @@ export default function BestEmployees({ startDate = "", endDate = "", setIsRefre
 
 // // ----------------------------------------------------------------
 const TimerButton = ({ changePageNumber = () => { } }) => {
-    const [seconds, setSeconds] = useState(180); // Start with 180 seconds (3 minutes)
+    const [seconds, setSeconds] = useState(60); // Start with 180 seconds (3 minutes)
     const [paused, setPaused] = useState(false);
 
     useEffect(() => {
         if (seconds === 0) {
-            setSeconds(180);
+            setSeconds(60);
             changePageNumber();
         }
         if (seconds > 0 && !paused) {
