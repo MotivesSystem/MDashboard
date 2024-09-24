@@ -41,17 +41,18 @@ function MLearningPopup({ modalContent = {}, onClose = () => { } }) {
 
     return (
         <Popup
-            visible={modalContent.visible}
+            visible={modalContent?.visible}
             onHiding={onClose}
-            dragEnabled={false}
+            dragEnabled
             closeOnOutsideClick
             showCloseButton
             showTitle
-            title={'M-Learning'}
+            resizeEnabled
+            title={modalContent?.title}
             style={{ top: "60px !important" }}
             // container=".dx-viewport"
-            width={mdUp ? "90%" : '100%'}
-            height={mdUp ? '90%' : '100%'}
+            minWidth={mdUp ? "90%" : '100%'}
+            minHeight={mdUp ? '90%' : '100%'}
             animation={{
                 show: {
                     type: 'fade',
@@ -80,8 +81,7 @@ function MLearningPopup({ modalContent = {}, onClose = () => { } }) {
                     }}
                 >
                     <Box textAlign={'center'} mt={2} height={'100%'}>
-                        {/* <Link href="https://lms.motivesfareast.com/slides" target={"_blank"}>{`https://lms.motivesfareast.com/slides`}</Link> */}
-                        <iframe title='lms.motivesfareast.com' allowFullScreen allow="http://localhost:5053" height={"95%"} width={"100%"} src="https://lms.motivesfareast.com/slides" />
+                        <iframe title='lms.motivesfareast.com' allowFullScreen height={"95%"} width={"100%"} src={modalContent?.linkContent} />
                     </Box>
                 </Card>
             </Stack>

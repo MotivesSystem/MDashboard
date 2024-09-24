@@ -40,7 +40,7 @@ import { DASHBOARD_COLORS } from '../../sections/tqa/technical-dashboard/index.t
 
 // 'isoWeek'
 const firstDayOfWeek = moment().startOf('month').format('MMMM DD, YYYY');
-const endOfMonth   = moment().endOf('month').format('MMMM DD, YYYY');
+const endOfMonth = moment().endOf('month').format('MMMM DD, YYYY');
 
 
 // ----------------------------------------------------------------
@@ -57,7 +57,7 @@ function SampleStatistics() {
         startDate: firstDayOfWeek,
         endDate: new Date(endOfMonth),
     });
-    const [modalContent, setModalContent] = useState({ visible: false })
+    const [modalContent, setModalContent] = useState({ visible: false, title: "", linkContent: "" })
 
     useEffect(() => {
         if (isRefresh) {
@@ -81,12 +81,12 @@ function SampleStatistics() {
         }
     };
 
-    const handleOpenModal = () => {
-        setModalContent({ visible: true })
+    const handleOpenModal = ({ title, linkContent }) => {
+        setModalContent({ visible: true, title, linkContent })
     }
 
     const handleCloseModal = () => {
-        setModalContent({ visible: false })
+        setModalContent({ visible: false, title: "", linkContent: "" })
     }
 
     const disableDates = (args) => {
@@ -186,26 +186,26 @@ function SampleStatistics() {
 
                 <Stack direction={'row'} width={'33%'} spacing={2} justifyContent={'space-evenly'} alignItems={'center'}>
                     <Stack justifyContent={'center'} alignItems={'center'} display={'flex'} >
-                        <IconButton onClick={handleOpenModal}> 
-                            <Iconify icon="carbon:video" />
+                        <IconButton onClick={() => handleOpenModal({ title: "M-Gallery", linkContent: "https://gla.motivesfareast.com/catalog" })}>
+                            <Iconify icon="carbon:image" />
                         </IconButton>
-                        <Typography variant='body2'>Video</Typography>
+                        <Typography variant='body2'>Gallery</Typography>
                     </Stack>
                     <Stack justifyContent={'center'} alignItems={'center'} display={'flex'}>
-                        <IconButton onClick={handleOpenModal}>
+                        <IconButton onClick={() => handleOpenModal({ title: "M-Learning", linkContent: "https://lms.motivesfareast.com/slides" })}>
                             <Iconify icon="iconoir:privacy-policy" />
                         </IconButton>
                         <Typography variant='body2'>Policy</Typography>
                     </Stack>
 
                     <Stack justifyContent={'center'} alignItems={'center'} display={'flex'}>
-                        <IconButton onClick={handleOpenModal}>
+                        <IconButton onClick={() => handleOpenModal({ title: "M-Learning", linkContent: "https://lms.motivesfareast.com/slides" })}>
                             <Iconify icon="material-symbols:fact-check-outline" />
                         </IconButton>
                         <Typography variant='body2'>Standard</Typography>
                     </Stack>
                     <Stack justifyContent={'center'} alignItems={'center'} display={'flex'}>
-                        <IconButton onClick={handleOpenModal}>
+                        <IconButton onClick={() => handleOpenModal({ title: "M-Learning", linkContent: "https://lms.motivesfareast.com/slides" })}>
                             <Iconify icon="fluent:document-one-page-sparkle-20-regular" />
                         </IconButton>
                         <Typography variant='body2'>Guidline</Typography>
