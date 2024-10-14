@@ -295,6 +295,8 @@ export default function Router() {
             { element: <Navigate to="/tqa/tqa_dashboard" replace />, index: true },
             { path: 'tqa_dashboard', element: <TQATechnicalDashboard /> },
             { path: 'sample_statistics', element: <TQASampleStatistics /> },
+            { path: 'mqc', element: <TQAMqc /> },
+            { path: 'qc', element: <TQAQc /> }
           ],
         },
       ],
@@ -417,6 +419,8 @@ const TQAMonthlyPlan = Loadable(lazy(() => import('../pages/tqa/TQAMonthlyPlan')
 const TQAFactoryProfile = Loadable(lazy(() => import('../pages/tqa/TQAFactoryProfile')));
 const TQATechnicalDashboard = Loadable(lazy(() => import('../pages/tqa/TQATechnicalDashboard')));
 const TQASampleStatistics = Loadable(lazy(() => import('../pages/tqa/SampleStatistics')));
+const TQAMqc = Loadable(lazy(() => import('../pages/tqa/Mqc')));
+const TQAQc = Loadable(lazy(() => import('../pages/tqa/Qc')));
 
 // MQC
 // const MQCInspectionList = Loadable(lazy(() => import('../pages/mqc/MQCInspectionList')));

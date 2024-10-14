@@ -29,8 +29,6 @@ import ThreeDDashBoard from '../../sections/tqa/technical-dashboard/@ThreeDDashB
 import SampleProductionDashBoard from '../../sections/tqa/technical-dashboard/@SampleProduction.tsx';
 
 // ----------------------------------------------------------------
-const baseHosting = "https://test-dashboard-api.motivesfareast.com/";
-
 type dateType = Date;
 interface IQueryDate {
   startDate: dateType;
@@ -89,38 +87,6 @@ const TQATechnicalDashboard = () => {
 
           <Iconify icon={"ic:baseline-info"} sx={{ fontSize: 20, color: DASHBOARD_COLORS.text.title, ml: 1 }} />:
 
-          {/* <DateBox
-            type="date"
-            displayFormat={"dd/MM/yyyy"}
-            label="Month"
-            labelMode="hidden"
-            style={{
-              maxHeight: "40px",
-              overFlow: 'hidden',
-              "&.dxButtonContent": {
-                maxHeight: "40px !important",
-              },
-              border: 'none',
-            }}
-
-            value={startDate}
-            onValueChange={(newValue) => {
-              handleChangeDate(newValue, 'startDate');
-            }}
-            height={40}
-            width={140}
-            showTodayButton
-            hoverStateEnabled={false}
-            activeStateEnabled={false}
-            openOnFieldClick
-            // showDropDownButton={false}
-            showClearButton={false}
-            acceptCustomValue={false}
-            className='tqa-dropdown-date'
-          />
-
-          <Typography className='tqa-dropdown-datebox'>~</Typography> */}
-
           <DateBox
             type="date"
             displayFormat={"monthAndYear"}
@@ -144,7 +110,6 @@ const TQATechnicalDashboard = () => {
               const lastDateOfMonth = new Date(newValue.getFullYear(), newValue.getMonth() + 1, 0)
               handleChangeDate(firstDateOfMonth, 'startDate');
               handleChangeDate(lastDateOfMonth, 'endDate');
-              // handleChangeDate(newValue, 'endDate');
             }}
             height={40}
             width={160}
@@ -152,7 +117,6 @@ const TQATechnicalDashboard = () => {
             hoverStateEnabled={false}
             activeStateEnabled={false}
             openOnFieldClick
-            // disabledDates={(data) => disableDates(data)}
             acceptCustomValue={false}
             className='tqa-dropdown-date'
           />
@@ -164,23 +128,18 @@ const TQATechnicalDashboard = () => {
 
         <Grid container p={1} spacing={2}>
           <Grid item xs={12} md={2.4}>
-            {/* <TQADasboardDesign startDate={stringStartDate} endDate={stringEndDate} /> */}
             <TechPack startDate={stringStartDate} endDate={stringEndDate} />
           </Grid>
           <Grid item xs={12} md={2.4}>
-            {/* <TQADasboardDesign startDate={stringStartDate} endDate={stringEndDate} /> */}
             <Pattern startDate={stringStartDate} endDate={stringEndDate} />
           </Grid>
           <Grid item xs={12} md={2.4}>
-            {/* <TQADasboardDesign startDate={stringStartDate} endDate={stringEndDate} /> */}
             <Consumption startDate={stringStartDate} endDate={stringEndDate} />
           </Grid>
           <Grid item xs={12} md={2.4}>
-            {/* <TQADasboard3D startDate={stringStartDate} endDate={stringEndDate} /> */}
             <ThreeDDashBoard startDate={stringStartDate} endDate={stringEndDate} />
           </Grid>
           <Grid item xs={12} md={2.4}>
-            {/* <TQADasboardSampleProduction startDate={stringStartDate} endDate={stringEndDate} /> */}
             <SampleProductionDashBoard
               startDate={stringStartDate} endDate={stringEndDate}
             />

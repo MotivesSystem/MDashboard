@@ -129,6 +129,8 @@ export const PATH_APP = {
     factory_profile: path(ROOTS_MAIN, '/tqa/map/factory_profile'),
     tqa_dashboard: path(ROOTS_MAIN, '/tqa/tqa_dashboard'),
     sample_statistics: path(ROOTS_MAIN, '/tqa/sample_statistics'),
+    mqc: path(ROOTS_MAIN, '/tqa/mqc'),
+    qc: path(ROOTS_MAIN, '/tqa/qc'),
   },
   system: {
     enum: path(ROOTS_MAIN, '/system/enum'),

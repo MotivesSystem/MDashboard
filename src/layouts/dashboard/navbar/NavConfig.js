@@ -125,6 +125,8 @@ const navConfig = [
           // { title: 'Factory Map', path: PATH_APP.tqa.factory_profile, id: 'tqa' },
           { title: 'Tech and Sample', path: PATH_APP.tqa.tqa_dashboard, id: 'tqa' },
           { title: 'Sample Room', path: PATH_APP.tqa.sample_statistics, id: 'tqa' },
+          { title: 'MQC', path: PATH_APP.tqa.mqc, id: 'tqa' },
+          { title: 'QC', path: PATH_APP.tqa.qc, id: 'tqa' },
         ],
       },
     ],
