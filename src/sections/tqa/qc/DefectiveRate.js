@@ -14,11 +14,11 @@ function DefectiveRate({ dataSource = {} }) {
             <Stack p={2}>
                 <Typography variant="h3" sx={{ color: "#2a8fe0" }}>{`${(dataSource.pick_sample_qty / 1000).toFixed(1)}K`}</Typography>
                 <Typography variant="subtitle1" sx={{ fontSize: 20, color: "gray" }}>{"Samples".toUpperCase()}</Typography>
-                <Typography variant="h3" sx={{ color: "#2a8fe0" }}>{`${dataSource.pick_sample_percent * 100}%`}</Typography>
+                <Typography variant="h3" sx={{ color: "#2a8fe0" }}>{`${(dataSource.pick_sample_percent * 100).toFixed(1)}%`}</Typography>
             </Stack>
             <Stack p={2}>
                 <Typography variant="subtitle1" sx={{ fontSize: 20, color: "gray" }}>{"defective rate".toUpperCase()}</Typography>
-                <Typography variant="h3" sx={{ color: "red" }}>{`${dataSource.defect_rate * 100}%`}</Typography>
+                <Typography variant="h3" sx={{ color: "red" }}>{`${(dataSource.defect_rate * 100).toFixed(1)}%`}</Typography>
             </Stack>
         </Stack>
     )
