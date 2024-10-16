@@ -4,7 +4,7 @@ import { useCallback, useEffect, useState } from 'react';
 // dev-extreme
 import { DateBox } from 'devextreme-react';
 // @mui
-import { Autocomplete, Box, Button, Grid, Stack, TextField, Checkbox, FormControlLabel, Paper, Divider } from "@mui/material";
+import { Autocomplete, Box, Button, Checkbox, Chip, Divider, FormControlLabel, Grid, Paper, Stack, TextField } from "@mui/material";
 // COMPONENTS
 import Iconify from '../../../components/Iconify';
 // utils
@@ -35,28 +35,36 @@ export default function HeaderFilter({ handleChangeFilter = () => { }, handleApp
     const [fieldData, setFieldData] = useState([
         { fieldName: "customers", data: [] },
         { fieldName: "factories", data: [] },
-        { fieldName: "divisions", data: [] }
+        { fieldName: "divisions", data: [] },
+        { fieldName: "qc_type", data: "FINAL" }
     ]);
 
     const getEnumsData = useCallback(() => {
-        const newData = [];
-        filters.map(async (filter) => {
-            if (filter?.type === "enum") {
-                await axios.get(`${baseHosting}${filter?.apiUrl}`).then((response) => {
-                    if (response?.data?.result === "success") {
-                        newData.push({
-                            enumName: filter?.label,
-                            fieldName: filter.fieldName,
-                            data: response?.data?.reply
-                        });
-                        setEnumsData(newData);
+        const fetchData = async () => {
+            const newData = await Promise.all(
+                filters.map(async (filter) => {
+                    if (filter?.type === 'enum') {
+                        try {
+                            const response = await axios.get(`${baseHosting}${filter?.apiUrl}`);
+                            if (response?.data?.result === 'success') {
+                                return {
+                                    enumName: filter?.label,
+                                    fieldName: filter.fieldName,
+                                    data: response?.data?.reply,
+                                };
+                            }
+                        } catch (e) {
+                            console.log(e);
+                        }
                     }
-                }).catch(e => {
-                    console.log(e);
+                    return null;
                 })
-            }
-            return filter;
-        })
+            );
+
+            setEnumsData(newData.filter(item => item !== null));
+        };
+
+        fetchData();
     }, [])
 
     const handleChangeDateRangeFilter = (value = "") => {
@@ -93,13 +101,22 @@ export default function HeaderFilter({ handleChangeFilter = () => { }, handleApp
                 setFieldData(f => {
                     const newFieldValue = fieldData.find(f => f.fieldName === fieldName);
                     newFieldValue.data = enumsData?.find(e => e.fieldName === fieldName).data;
-                    return [...f, newFieldValue];
+                    return [...f];
+                })
+                handleChangeFilter(valueObj);
+            }
+            else {
+                valueObj[fieldName] = textValue;
+                setFieldData(f => {
+                    const newFieldValue = fieldData.find(f => f.fieldName === fieldName);
+                    newFieldValue.data = [];
+                    return [...f];
                 })
                 handleChangeFilter(valueObj);
             }
             const newFieldValue = prev.find((i) => i.fieldName === fieldName)
             newFieldValue.value = !newFieldValue.value
-            return [...prev, newFieldValue];
+            return [...prev];
         });
     };
 
@@ -115,7 +132,8 @@ export default function HeaderFilter({ handleChangeFilter = () => { }, handleApp
         setFieldData([
             { fieldName: "customers", data: [] },
             { fieldName: "factories", data: [] },
-            { fieldName: "divisions", data: [] }
+            { fieldName: "divisions", data: [] },
+            { fieldName: "qc_type", data: "FINAL" }
         ]);
         handleClearFilter();
     }
@@ -145,14 +163,26 @@ export default function HeaderFilter({ handleChangeFilter = () => { }, handleApp
                     )
                 if (filter.type === "enum") {
                     return (
-                        <Grid item sm={1.6} key={filter.label}>
+                        <Grid item sm={4} key={filter.label}>
                             <Autocomplete
                                 id={filter.label}
                                 multiple
                                 autoComplete
                                 disableCloseOnSelect
                                 limitTags={1}
-                                onChange={(e, newValue) => {
+                                onChange={(e, newValue, reason) => {
+                                    if (reason === "clear" || reason === "removeOption")
+                                        setSelectAll(select => {
+                                            const currentField = selectAll.find(field => field.fieldName === filter.fieldName);
+                                            currentField.value = false;
+                                            return [...select]
+                                        });
+                                    if (reason === "selectOption" && newValue.length === enumsData?.find((enumData) => enumData?.enumName === filter?.label)?.data?.length)
+                                        setSelectAll(select => {
+                                            const currentField = selectAll.find(field => field.fieldName === filter.fieldName);
+                                            currentField.value = true;
+                                            return [...select]
+                                        });
                                     const valueObj = {}
                                     let textValue = ''
                                     newValue.map((v) => {
@@ -163,18 +193,17 @@ export default function HeaderFilter({ handleChangeFilter = () => { }, handleApp
                                     setFieldData(field => {
                                         const newFieldValue = fieldData.find(f => f.fieldName === filter.fieldName)
                                         newFieldValue.data = newValue
-                                        return [...field, newFieldValue]
+                                        return [...field]
                                     })
                                     handleChangeFilter(valueObj);
                                 }}
-                                value={fieldData.find(f => f.fieldName === filter.fieldName).data || []}
+                                value={fieldData.find(f => f.fieldName === filter.fieldName)?.data || []}
                                 getOptionLabel={(option) => {
                                     return option?.Name === undefined ? '' : `${option?.Name}` || '';
                                 }}
                                 options={enumsData?.find((enumData) => enumData?.enumName === filter?.label)?.data || []}
                                 size="small"
                                 autoHighlight
-                                // sx={{ width: '100%', minWidth: 150 }}
                                 renderInput={(params) => (
                                     <RenderInput
                                         params={{ ...params }}
@@ -182,14 +211,6 @@ export default function HeaderFilter({ handleChangeFilter = () => { }, handleApp
                                     // required
                                     />
                                 )}
-                                // PopperComponent={PopperStyle}
-                                // renderOption={(props, option) => {
-                                //     return (
-                                //         <Box component="li" {...props}>
-                                //             {option?.Name}
-                                //         </Box>
-                                //     );
-                                // }}
                                 renderOption={(props, option, { selected }) => {
                                     const { key, ...optionProps } = props;
                                     return (
@@ -202,6 +223,30 @@ export default function HeaderFilter({ handleChangeFilter = () => { }, handleApp
                                             />
                                             {option.Name}
                                         </li>
+                                    );
+                                }}
+                                renderTags={(value, getTagProps) => {
+                                    const numTags = value.length;
+
+                                    return (
+                                        <div
+                                            style={{
+                                                maxHeight: "100px",
+                                                overflowY: "auto",
+                                                scrollbarWidth: "thin",
+                                            }}
+                                        >
+                                            {
+                                                value
+                                                    .slice(0, 3)
+                                                    .map((option, index) => {
+                                                        return (
+                                                            <Chip label={option.Name} {...getTagProps({ index })} />
+                                                        )
+                                                    })
+                                            }
+                                            {numTags > 3 && ` +${numTags - 3} more`}
+                                        </div>
                                     );
                                 }}
                                 isOptionEqualToValue={(option, value) => {
@@ -239,6 +284,56 @@ export default function HeaderFilter({ handleChangeFilter = () => { }, handleApp
                 return filter;
 
             })}
+            <Grid item sm={4}>
+                <Autocomplete
+                    id={"qcType"}
+                    autoComplete
+                    fullWidth
+                    onChange={(e, newValue, reason) => {
+                        const valueObj = {}
+
+                        valueObj.qc_type = `${newValue || ""}`
+                        setFieldData(field => {
+                            const newFieldValue = fieldData.find(f => f.fieldName === "qc_type")
+                            newFieldValue.data = newValue
+                            return [...field]
+                        })
+                        handleChangeFilter(valueObj);
+                    }}
+                    value={fieldData.find(f => f.fieldName === "qc_type")?.data || ""}
+                    getOptionLabel={(option) => {
+                        return `${option}` || '';
+                    }}
+                    options={["INLINE", "FINAL"]}
+                    size="small"
+                    autoHighlight
+                    // sx={{ width: '100%', minWidth: 150 }}
+                    renderInput={(params) => (
+                        <RenderInput
+                            params={{ ...params }}
+                            label={"QC Type"}
+                        // required
+                        />
+                    )}
+                    renderOption={(props, option, { selected }) => {
+                        const { key, ...optionProps } = props;
+                        return (
+                            <li key={key} {...optionProps}>
+                                <Box
+                                    //   icon={icon}
+                                    //   checkedIcon={checkedIcon}
+                                    style={{ marginRight: 8 }}
+                                // checked={selected}
+                                />
+                                {option}
+                            </li>
+                        );
+                    }}
+                    isOptionEqualToValue={(option, value) => {
+                        return `${option}` === `${value}`;
+                    }}
+                />
+            </Grid>
             <Grid item sm={2}>
                 <DateBox
                     type="date"
@@ -301,7 +396,7 @@ export default function HeaderFilter({ handleChangeFilter = () => { }, handleApp
                     className='tqa-dropdown-date'
                 />
             </Grid>
-            <Grid item sm={3.2} display={'flex'} alignItems={"center"} gap={1}>
+            <Grid item sm={4} display={'flex'} alignItems={"center"} gap={1}>
                 <Button fullWidth variant="contained" color='info' onClick={handleApplyFilter}>
                     Apply
                 </Button>
@@ -309,7 +404,7 @@ export default function HeaderFilter({ handleChangeFilter = () => { }, handleApp
                     Clear Filter
                 </Button>
             </Grid>
-        </Grid>
+        </Grid >
     )
 }
 

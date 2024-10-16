@@ -34,23 +34,31 @@ export default function HeaderFilter({ handleChangeFilter = () => { }, handleApp
     ]);
 
     const getEnumsData = useCallback(() => {
-        const newData = [];
-        filters.map(async (filter) => {
-            if (filter?.type === "enum") {
-                await axios.get(`${baseHosting}${filter?.apiUrl}`).then((response) => {
-                    if (response?.data?.result === "success") {
-                        newData.push({
-                            enumName: filter?.label,
-                            data: response?.data?.reply
-                        });
-                        setEnumsData(newData);
+        const fetchData = async () => {
+            const newData = await Promise.all(
+                filters.map(async (filter) => {
+                    if (filter?.type === 'enum') {
+                        try {
+                            const response = await axios.get(`${baseHosting}${filter?.apiUrl}`);
+                            if (response?.data?.result === 'success') {
+                                return {
+                                    enumName: filter?.label,
+                                    fieldName: filter.fieldName,
+                                    data: response?.data?.reply,
+                                };
+                            }
+                        } catch (e) {
+                            console.log(e);
+                        }
                     }
-                }).catch(e => {
-                    console.log(e);
+                    return null;
                 })
-            }
-            return filter;
-        })
+            );
+
+            setEnumsData(newData.filter(item => item !== null));
+        };
+
+        fetchData();
     }, [])
 
     const handleChangeDateRangeFilter = (value = "") => {
@@ -120,7 +128,7 @@ export default function HeaderFilter({ handleChangeFilter = () => { }, handleApp
                                     setFieldData(field => {
                                         const newFieldValue = fieldData.find(f => f.fieldName === filter.fieldName)
                                         newFieldValue.data = newValue
-                                        return [...field, newFieldValue]
+                                        return [...field]
                                     })
                                     handleChangeFilter(valueObj);
                                 }}

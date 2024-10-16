@@ -97,7 +97,6 @@ const Qc = () => {
         const newData = {};
         await Promise.all([getOverviewPieChart, getDefectFactoryChart, getDefectDepChart, getTop5Decfect, getTop5RepeatDefect, getStatisticColumn])
             .then((response) => {
-                console.log(response)
                 newData.overView = response[0]?.data?.reply;
                 newData.defectFactoryQuality = response[1]?.data?.reply || [];
                 newData.defectEachDept = response[2]?.data?.reply || [];
@@ -118,20 +117,17 @@ const Qc = () => {
         setFilterValue({
             "start_date": "",
             "end_date": "",
-            "suppliers": "",
+            "division": "",
             "customers": "",
             "factories": "",
             "qc_type": "FINAL"
         });
     }
-    console.log(dataSources);
-    console.log(filterValue);
 
     return (
         <Page title="TQA - QC Dashboard">
 
             <HeaderFilter
-                filterValue={filterValue}
                 handleChangeFilter={handleChangeFilter}
                 handleApplyFilter={handleApplyFilter}
                 handleClearFilter={handleClearFilter}
@@ -145,12 +141,12 @@ const Qc = () => {
                 <Grid item sm={12}>
                     <Typography color={'gray'}>DEFECTS STATISTIC</Typography>
                 </Grid>
-                <Grid item sm={1}>
+                <Grid item sm={1.5}>
                     <Card>
                         <DefectiveRate dataSource={dataSources.overView} />
                     </Card>
                 </Grid>
-                <Grid item sm={11}>
+                <Grid item sm={10.5}>
 
                     <Card>
                         <DefectFactoryQuality dataSource={dataSources.defectFactoryQuality} />

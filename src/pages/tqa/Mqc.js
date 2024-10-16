@@ -80,7 +80,6 @@ const Mqc = () => {
         const newData = {};
         await Promise.all([getOverviewPieChart, getInspectedDefectRate, getChargeBackPieChart, getSupplierChart, getChargeBackBarChart, getInspAuditor])
             .then((response) => {
-                console.log(response)
                 newData.overView = response[0]?.data?.reply;
                 newData.defectRatePieChart = response[1]?.data?.reply;
                 newData.chargeBackPieChart = response[2]?.data?.reply;

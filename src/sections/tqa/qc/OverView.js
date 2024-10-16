@@ -13,12 +13,12 @@ function OverView({ dataSource = {} }) {
         <Grid container >
             <Grid item sm={12} textAlign={'center'} justifyContent={'space-between'} display={'flex'} >
                 <Stack p={2}>
-                    <Typography variant="h3" sx={{ color: "#2a8fe0" }}>{`${(dataSource.total_insp / 1000).toFixed(1)}K`}</Typography>
+                    <Typography variant="h3" sx={{ color: "#2a8fe0" }}>{`${dataSource.total_insp}`}</Typography>
                     <Typography variant="subtitle1" sx={{ fontSize: 20, color: "gray" }}>{"Total Inspection".toUpperCase()}</Typography>
                 </Stack>
                 <Box justifyContent={'center'} display={'flex'}>
                     <Stack p={2} >
-                        <Typography variant="h5" sx={{ color: "#2a8fe0" }}>{`${(dataSource.insp_new / 1000).toFixed(1)}K`}</Typography>
+                        <Typography variant="h5" sx={{ color: "#2a8fe0" }}>{`${dataSource.insp_new}`}</Typography>
                         <Typography variant="subtitle1" sx={{ fontSize: 12, color: "gray" }}>{"New Inline Inspection".toUpperCase()}</Typography>
                         <Box display={'flex'} justifyContent={'center'} gap={1}>
                             <Typography variant="subtitle1" sx={{ fontSize: 12, color: "gray" }}>{`Last Month:`}</Typography>
@@ -29,7 +29,7 @@ function OverView({ dataSource = {} }) {
                     </Stack>
                     <Box sx={{ borderRight: "1px solid gray", height: "80%", alignSelf: "center" }} />
                     <Stack p={2}>
-                        <Typography variant="h5" sx={{ color: "#2a8fe0" }}>{`${(dataSource.insp_complete / 1000).toFixed(1)}K`}</Typography>
+                        <Typography variant="h5" sx={{ color: "#2a8fe0" }}>{`${dataSource.insp_complete}`}</Typography>
                         <Typography variant="subtitle1" sx={{ fontSize: 12, color: "gray" }}>{"Completed Inline Inspection".toUpperCase()}</Typography>
                         <Box display={'flex'} justifyContent={'center'} gap={1}>
                             <Typography variant="subtitle1" sx={{ fontSize: 12, color: "gray" }}>{`Last Month:`}</Typography>
@@ -43,7 +43,7 @@ function OverView({ dataSource = {} }) {
             <Grid item sm={6} textAlign={'center'} display={'flex'} justifyContent={'center'}> */}
                 <Box sx={{ borderRight: "1px solid gray", height: "100%", alignSelf: "center" }} />
                 <Stack p={2}>
-                    <Typography variant="h3" sx={{ color: "#2a8fe0" }}>{`${(dataSource.inspected_qty / 1000).toFixed(1)}K`}</Typography>
+                    <Typography variant="h3" sx={{ color: "#2a8fe0" }}>{`${dataSource.inspected_qty}`}</Typography>
                     <Typography variant="subtitle1" sx={{ fontSize: 20, color: "gray" }}>{"Inspected Inline Quantity".toUpperCase()}</Typography>
                 </Stack>
 
