@@ -21,6 +21,7 @@ function Top5DefectPieChart({ dataSource = [] }) {
         <PieChart id="pie"
             palette="Bright"
             dataSource={dataSource}
+            resolveLabelOverlapping="shift"
         // title="Inspected Defect Rate"
         >
 

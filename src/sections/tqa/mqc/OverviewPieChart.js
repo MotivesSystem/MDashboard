@@ -1,6 +1,7 @@
 import { Card, Grid, Typography, Stack } from "@mui/material";
 import PieChart, { Connector, Export, Font, IPieChartOptions, Label, Legend, Margin, Series, Size, Tooltip, Title } from 'devextreme-react/pie-chart';
 import { useEffect, useState } from "react";
+import { fNumber } from "../../../utils/formatNumber";
 
 function customizeText(arg: { valueText: string; percentText: string; }) {
     return `${arg.argumentText} (${arg.percentText})`;
@@ -23,11 +24,11 @@ function OverviewPieChart({ dataSource = [] }) {
         <Grid container>
             <Grid item sm={6} textAlign={'center'} alignSelf={"center"}>
                 <Stack p={5}>
-                    <Typography variant="h2" sx={{ color: "#2a8fe0" }}>{inspQuantity.totalInsp}</Typography>
+                    <Typography variant="h2" sx={{ color: "#2a8fe0" }}>{fNumber(inspQuantity.totalInsp)}</Typography>
                     <Typography variant="subtitle1" sx={{ fontSize: 30, color: "gray" }}>{"Total Inspection".toUpperCase()}</Typography>
                 </Stack>
                 <Stack p={5}>
-                    <Typography variant="h2" sx={{ color: "#2a8fe0" }}>{inspQuantity.inspectedQuantity}</Typography>
+                    <Typography variant="h2" sx={{ color: "#2a8fe0" }}>{fNumber(inspQuantity.inspectedQuantity)}</Typography>
                     <Typography variant="subtitle1" sx={{ fontSize: 30, color: "gray" }}>{"Inspected Quantity".toUpperCase()}</Typography>
                 </Stack>
             </Grid>

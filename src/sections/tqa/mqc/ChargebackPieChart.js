@@ -21,6 +21,7 @@ function ChargebackPieChart({ dataSource = [] }) {
         <PieChart id="pie"
             palette="Bright"
             dataSource={dataSource}
+            resolveLabelOverlapping="shift"
         // title="Chargeback Defect Rate"
         >
 
