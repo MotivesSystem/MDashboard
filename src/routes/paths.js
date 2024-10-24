@@ -131,6 +131,7 @@ export const PATH_APP = {
     sample_statistics: path(ROOTS_MAIN, '/tqa/sample_statistics'),
     mqc: path(ROOTS_MAIN, '/tqa/mqc'),
     qc: path(ROOTS_MAIN, '/tqa/qc'),
+    productivity: path(ROOTS_MAIN, '/tqa/productivity'),
   },
   system: {
     enum: path(ROOTS_MAIN, '/system/enum'),

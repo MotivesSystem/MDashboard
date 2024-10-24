@@ -1,20 +1,15 @@
 import Card from '@mui/material/Card';
 import Grid from '@mui/material/Grid';
-import Typography from '@mui/material/Typography';
-import moment from 'moment';
 import { useCallback, useState } from 'react';
 import Page from '../../components/Page';
 import axios from '../../utils/axios';
 // sections
-import OverView from '../../sections/tqa/qc/OverView';
-import DefectiveRate from '../../sections/tqa/qc/DefectiveRate';
-import DefectEachDept from '../../sections/tqa/qc/DefectEachDept';
-import DefectFactoryQuality from '../../sections/tqa/qc/DefectFactoryQuality';
-import HeaderFilter from '../../sections/tqa/qc/HeaderFilter';
-import InspectionGrid from '../../sections/tqa/qc/InspectionGrid';
-import StatisticBarChart from '../../sections/tqa/qc/StatisticBarChart';
-import Top5DefectPieChart from '../../sections/tqa/qc/Top5DefectPieChart';
-import Top5RepeatedDefect from '../../sections/tqa/qc/Top5RepeatedDefect';
+import FacAndCusChart from '../../sections/tqa/productivity/FacAndCusChart';
+import HeaderFilter from '../../sections/tqa/productivity/HeaderFilter';
+import InspectionGrid from '../../sections/tqa/productivity/InspectionGrid';
+import LoadingChart from '../../sections/tqa/productivity/LoadingChart';
+import OverView from '../../sections/tqa/productivity/OverView';
+import QtyAndTrendingChart from '../../sections/tqa/productivity/QtyAndTrendingChart';
 // config
 import { HOST_API_DASHBOARD } from '../../config';
 
@@ -26,21 +21,20 @@ interface IQueryDate {
     startDate: dateType;
     endDate: dateType;
 }
-const firstDayOfWeek = moment().startOf('month').format('MMMM DD, YYYY');
-const endOfMonth = moment().endOf('month').format('MMMM DD, YYYY');
+const initialFilterValue = {
+    "start_date": "",
+    "end_date": "",
+    "division": "",
+    "customers": "",
+    "factories": "",
+    // "qc_type": "FINAL"
+}
 
 // ----------------------------------------------------------------
-const Qc = () => {
+const Productivity = () => {
 
     // components states;
-    const [filterValue, setFilterValue] = useState({
-        "start_date": "",
-        "end_date": "",
-        "division": "",
-        "customers": "",
-        "factories": "",
-        "qc_type": "FINAL"
-    })
+    const [filterValue, setFilterValue] = useState(initialFilterValue)
 
     const [dataSources, setDataSources] = useState({
         overView: {
@@ -65,7 +59,6 @@ const Qc = () => {
         inspList: []
     })
 
-    const [qcTypeLabel, setQcTypeLabel] = useState(filterValue.qc_type);
     const [pageLoading, setPageLoading] = useState(false);
     const [gridLoading, setGridLoading] = useState(false);
 
@@ -106,7 +99,6 @@ const Qc = () => {
                 newData.statisticBarChart = response[5]?.data?.reply || [];
                 // newData.inspList = response[6]?.data?.reply;
                 setPageLoading(false);
-                setQcTypeLabel(filterValue.qc_type);
                 setDataSources(newData);
             }).catch(e => {
                 console.log(e)
@@ -116,18 +108,11 @@ const Qc = () => {
     }, [filterValue]);
 
     const handleClearFilter = () => {
-        setFilterValue({
-            "start_date": "",
-            "end_date": "",
-            "division": "",
-            "customers": "",
-            "factories": "",
-            "qc_type": "FINAL"
-        });
+        setFilterValue(initialFilterValue);
     }
 
     return (
-        <Page title="TQA - QC Dashboard">
+        <Page title="TQA - Productivity Dashboard">
 
             <HeaderFilter
                 handleChangeFilter={handleChangeFilter}
@@ -137,52 +122,35 @@ const Qc = () => {
             <Grid container spacing={1} mt={1}>
                 <Grid item sm={12}>
                     <Card>
-                        <OverView dataSource={dataSources.overView} qcType={qcTypeLabel} />
+                        <OverView dataSource={dataSources.overView} />
                     </Card>
                 </Grid>
-                <Grid item sm={12}>
-                    <Typography color={'gray'}>DEFECTS STATISTIC</Typography>
-                </Grid>
-                <Grid item sm={1.5}>
+                <Grid item sm={5}>
                     <Card>
-                        <DefectiveRate dataSource={dataSources.overView} />
+                        <LoadingChart />
                     </Card>
                 </Grid>
-                <Grid item sm={10.5}>
+                <Grid item sm={7}>
 
-                    <Card>
-                        <DefectFactoryQuality dataSource={dataSources.defectFactoryQuality} />
-                    </Card>
-                </Grid>
-                <Grid item sm={6}>
-                    <Card>
-                        <DefectEachDept dataSource={dataSources.defectEachDept} />
-                    </Card>
-                </Grid>
-                <Grid item sm={6}>
-                    <Card>
-                        <Top5DefectPieChart dataSource={dataSources.top5DefectPieChart} />
-                    </Card>
-                </Grid>
-                <Grid item sm={12}>
-                    <Card>
-                        <Top5RepeatedDefect dataSource={dataSources.top5RepeatedDefect} />
-                    </Card>
-                </Grid>
-                <Grid item sm={12}>
-                    <Card>
-                        <StatisticBarChart dataSource={dataSources.statisticBarChart} />
-                    </Card>
-                </Grid>
-                <Grid item sm={12}>
                     <Card>
                         <InspectionGrid dataSource={dataSources.inspList} filterValue={filterValue} gridLoading={gridLoading} />
                     </Card>
                 </Grid>
+                <Grid item sm={6}>
+                    <Card>
+                        <FacAndCusChart />
+                    </Card>
+                </Grid>
+                <Grid item sm={6}>
+                    <Card>
+                        <QtyAndTrendingChart />
+                    </Card>
+                </Grid>
+
             </Grid>
         </Page>
     );
 };
 
 
-export default Qc;
+export default Productivity;

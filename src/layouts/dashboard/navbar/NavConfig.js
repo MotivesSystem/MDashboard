@@ -127,6 +127,7 @@ const navConfig = [
           { title: 'Sample Room', path: PATH_APP.tqa.sample_statistics, id: 'tqa' },
           { title: 'MQC', path: PATH_APP.tqa.mqc, id: 'tqa' },
           { title: 'QC', path: PATH_APP.tqa.qc, id: 'tqa' },
+          { title: 'Productivity', path: PATH_APP.tqa.productivity, id: 'tqa' },
         ],
       },
     ],
